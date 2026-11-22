@@ -65,6 +65,8 @@
     <!-- the phone's panel, served at /panel/ for the live preview in the layout editor -->
     <EmbeddedResource Include="..\..\android\app\src\main\assets\www\*.*" LogicalName="www/%(Filename)%(Extension)" />
     <EmbeddedResource Include="..\..\android\app\src\main\assets\www\widgets\*.*" LogicalName="www/widgets/%(Filename)%(Extension)" />
+    <!-- fork overlay (docs/fork/DESIGN.md): its modules, styles, vendored libraries and fonts, in their folders -->
+    <EmbeddedResource Include="..\..\android\app\src\main\assets\www\overlay\**\*.*" LogicalName="www/overlay/$([System.String]::Copy('%(RecursiveDir)').Replace('\', '/'))%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
