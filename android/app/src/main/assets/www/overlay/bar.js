@@ -13,6 +13,7 @@ const uptime = (sec) => {
 
 const waitingForYou = () => (D.work?.sessions || []).some((s) => s.status === 'waiting');
 const isClaudePage = (p) => p.widgets.some((w) => w.type === 'x-claude' || w.type === 'sessions');
+const isForkPage = (p) => p.widgets.some((w) => w.type.startsWith('x-'));
 
 export function mountBar() {
   const host = h('span', 'host');
@@ -35,6 +36,7 @@ export function mountBar() {
   };
   const markCurrent = () => [...nav.children].forEach((tab, i) => tab.classList.toggle('on', i === curPage));
   const refresh = () => {
+    document.documentElement.classList.toggle('x-on', !!pages[0] && isForkPage(pages[0]));
     renderTabs();
     markCurrent();
     host.textContent = D.state?.host || '';

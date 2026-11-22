@@ -39,3 +39,4 @@
 .x-on .ap-card { border-radius: 0; background: var(--x-bg); border: 1px solid var(--x-line); font-family: var(--x-sans); }
 .x-on .ap-btn { border-radius: 0; }
 .x-on .ap-btn.allow { background: var(--x-warn); color: var(--x-warn-ink); }
+html:not(.x-on) #x-bar { display: none; }

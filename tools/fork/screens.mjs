@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
 
 const BASE = process.env.DEMO_URL || 'http://127.0.0.1:8790/panel/';
 const OUT = process.argv[2] || 'fork-screens';
-const PAGES = ['x-system', 'x-claude', 'x-music', 'x-deck', 'x-dev'];
+const PAGES = ['x-system', 'x-claude', 'x-music', 'x-deck', 'x-dev']; // first page decides the look (bar.js)
 const VIEWPORT = { width: 1280, height: 800 };
 
 mkdirSync(OUT, { recursive: true });
