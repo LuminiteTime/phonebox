@@ -1,0 +1,7 @@
+/* "Система" layout: three load cells, three resource cells, Claude footer. */
+.x-system { grid-template-columns: 1.15fr 1fr 1fr; grid-template-rows: 1fr 1fr 150px; }
+.x-foot { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); }
+.x-spark { display: block; width: 100%; height: 46px; margin-top: 10px; color: var(--x-net); }
+.x-ses { margin-top: 10px; font: var(--x-fs-small) var(--x-mono); line-height: 1.9; }
+.x-ses > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.x-qbar.over b { background: var(--x-warn); }
