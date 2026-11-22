@@ -85,3 +85,16 @@ overlay их перекрашивает и добавляет шапку с вк
 4. Музыка на данных агента (Now Playing); Яндекс-специфика — этап компаньона.
 5. Сборка APK со стабильной подписью, установка на планшет.
 6. Компаньон: Яндекс.Музыка (Ynison + REST), GPU по процессам (`ioreg`), дайджест с обходом paywall.
+
+## Running it
+
+- **The look switches on** when the first page of the config is a fork page (`x-*` widget). A stock layout keeps the
+  upstream panel, so upstream UI tests run unchanged.
+- **Checks:** `node --test tools/fork/test/*.test.mjs` (pure logic), `python tools/demo-server.py` then
+  `node tools/fork/screens.mjs <dir>` (screens of every fork page, fails on page errors), `python3 tools/check-release.py`,
+  `npx playwright test` in `tools/ui-tests` (upstream suite).
+- **APK:** `tools/fork/build-apk.sh` builds a release APK signed with a stable local key kept in
+  `~/.config/phonebox-fork` (back it up). The first install replaces an upstream build, whose signature differs:
+  uninstall that one first and pair again.
+- **Agent:** the agent embeds `www/overlay/**` for the layout editor's live preview. An upstream agent update replaces
+  `widgets.json` / `templates.json` and drops the fork's catalog entries until it is rebuilt from this repo.
