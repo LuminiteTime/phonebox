@@ -1,0 +1,20 @@
+/* "Claude" layout: two windows side by side, the week and the sessions below. */
+.x-claude { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 250px; }
+/* the reading sits low in the cell, under its label: number, bar, details */
+.x-num.x-big { margin: auto 0 4px; font-size: 136px; letter-spacing: -0.05em; color: var(--x-claude); }
+.x-num.x-big small { font-size: 34px; margin-left: 6px; }
+.x-claude .x-qbar { height: 12px; margin: 20px 0 22px; }
+.x-meta { display: grid; grid-template-columns: 130px 1fr; gap: 8px 12px; margin: 0; }
+.x-meta dt { align-self: center; font: var(--x-fs-label) var(--x-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--x-muted); }
+.x-meta dd { margin: 0; }
+.x-meta b { font-weight: 600; }
+.x-meta .good { color: var(--x-ok); }
+.x-meta .warn { color: var(--x-warn); }
+
+/* week by day: one column per day of the weekly window */
+.x-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 170px; margin-top: 14px; }
+.x-days > div { display: grid; grid-template-rows: 1fr auto auto; align-items: end; text-align: center; font: var(--x-fs-label) var(--x-mono); color: var(--x-muted); }
+.x-days i { display: block; height: calc(var(--v, 0) * 100%); min-height: 2px; background: var(--x-claude); opacity: .75; transition: height var(--x-t-slow) var(--x-ease-out); }
+.x-days .today i { opacity: 1; box-shadow: 0 0 0 1px var(--x-text); }
+.x-days .future i { background: var(--x-off); opacity: 1; }
+.x-days span { margin-top: 4px; color: var(--x-text); min-height: 1.2em; }

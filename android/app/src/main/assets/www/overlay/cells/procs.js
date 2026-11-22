@@ -2,23 +2,10 @@
 import { D, h, fmtMem } from '../../main.js';
 import { cell, label } from '../lib/ui.js';
 import { reorder } from '../lib/motion.js';
+import { stickyOrder } from '../lib/order.js';
 
 const ROWS = 4;
-const OVERTAKE = 3; // CPU points a process must lead by before it moves up
 const HOT = 30;
-
-/** Previous order kept where the CPU gap is small; new names join at the end. */
-export function stickyOrder(prev, groups) {
-  const cpu = new Map(groups.map((g) => [g.name, g.cpu]));
-  const order = prev.filter((n) => cpu.has(n));
-  for (const g of groups) if (!order.includes(g.name)) order.push(g.name);
-  for (let pass = 0; pass < order.length; pass++) {
-    for (let i = order.length - 1; i > 0; i--) {
-      if (cpu.get(order[i]) > cpu.get(order[i - 1]) + OVERTAKE) [order[i - 1], order[i]] = [order[i], order[i - 1]];
-    }
-  }
-  return order;
-}
 
 export function procsCell() {
   const list = h('div', 'x-list');

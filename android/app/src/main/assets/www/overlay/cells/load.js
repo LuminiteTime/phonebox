@@ -15,7 +15,7 @@ function loadCell(name, meter) {
   const num = number('%');
   const sub = h('div', 'x-sub');
   const who = h('div', 'x-who');
-  const el = cell('', fill, head, num, sub, meter, who);
+  const el = cell('', fill, head, num, sub, who, meter);
   const alert = alertState(el);
   const smooth = calm(LOAD_CALM);
   /** Returns the smoothed load after showing it. */

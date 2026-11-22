@@ -1,8 +1,12 @@
 /* Building blocks shared by the fork's pages: hairline cells, labels, numbers, meters, alert states. */
 .x-page { display: grid; height: 100%; background: var(--x-bg); color: var(--x-text); font: var(--x-fs-body)/1.3 var(--x-sans); user-select: none; }
-.x-cell { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: var(--x-cell-pad); border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); }
+.x-cell { display: flex; flex-direction: column; position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: var(--x-cell-pad); border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); }
 .x-cell > :not(.x-fill) { position: relative; z-index: 1; }
 .x-cell.end { border-right: 0; }
+/* the instrument part of a cell (meter, chart, details) sits on its bottom edge */
+.x-cell > :is(.x-ticks, .x-bars, .x-spark, .x-days) { margin-top: auto; }
+.x-cell > .x-who { margin-top: auto; margin-bottom: 12px; }
+.x-who + :is(.x-ticks, .x-bars) { margin-top: 0; }
 .x-cell.last { border-bottom: 0; }
 
 .x-lb { display: flex; justify-content: space-between; gap: 12px; font: var(--x-fs-label) var(--x-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--x-muted); white-space: nowrap; }
