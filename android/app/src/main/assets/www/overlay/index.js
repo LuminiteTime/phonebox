@@ -6,6 +6,7 @@ import './pages/system.js';
 import './pages/claude.js';
 import './pages/deck.js';
 import './pages/music.js';
+import './pages/dev.js';
 
 const MODERN = typeof CSS !== 'undefined' && CSS.supports('color', 'oklch(0.5 0.1 200)') && CSS.supports('selector(:has(*))');
 
