@@ -18,6 +18,7 @@ import './widgets/camera.js';
 import './widgets/spectrum.js';
 import './widgets/steam-library.js';
 import './widgets/lyrics.js';
+import './overlay/index.js'; // fork: docs/fork/DESIGN.md
 
 // PhoneBox desk panel. Pages are 12 × 6 grids of widgets, designed in the agent's settings page.
 // The panel talks to the PhoneBox agent through "/agent/*", which the Android shell proxies over USB

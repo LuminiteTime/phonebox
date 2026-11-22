@@ -1,0 +1,41 @@
+/* The panel chrome in the fork's look. Everything is scoped to .x-on (set when the WebView is modern enough). */
+.x-on body { background: var(--x-bg); color: var(--x-text); font-family: var(--x-sans); }
+.x-on body::before { display: none; }
+
+/* room for the tab bar; the fork's full-page widgets fill the rest edge to edge */
+.x-on .page { padding-top: calc(var(--x-bar-h) + 10px); }
+.x-on .page:has(> .grid > .x-page) { padding: var(--x-bar-h) 0 0; }
+.x-on .grid:has(> .x-page) { gap: 0; }
+.x-on #dots, .x-on #ptitle { display: none; }
+
+/* upstream widgets on the same hairline grid */
+.x-on .card { background: transparent; border-color: var(--x-line); border-radius: 0; box-shadow: none; }
+
+/* tab bar */
+#x-bar {
+  position: fixed; inset: 0 0 auto; z-index: 6; height: var(--x-bar-h);
+  display: flex; align-items: center; gap: 22px; padding: 0 18px;
+  border-bottom: 1px solid var(--x-line); background: var(--x-bg);
+  font: var(--x-fs-small) var(--x-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--x-muted);
+}
+#x-bar .host { color: var(--x-text); font-weight: 500; }
+#x-bar nav { margin-left: auto; display: flex; gap: 22px; height: 100%; position: relative; }
+#x-bar nav button {
+  all: unset; cursor: pointer; position: relative; display: flex; align-items: center; color: var(--x-dim);
+  transition: color var(--x-t-fast) var(--x-ease-soft);
+}
+#x-bar nav button.on { color: var(--x-text); }
+#x-bar nav button::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--x-text);
+  transform: scaleX(0); transition: transform var(--x-t-fast) var(--x-ease-out);
+}
+#x-bar nav button.on::after { transform: scaleX(1); }
+#x-bar nav button.flag::before {
+  content: ''; position: absolute; right: -9px; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--x-warn);
+}
+
+/* toast and approval card: same vocabulary, square corners */
+.x-on .toast { border-radius: 0; font-family: var(--x-sans); background: var(--x-raise); border: 1px solid var(--x-line); }
+.x-on .ap-card { border-radius: 0; background: var(--x-bg); border: 1px solid var(--x-line); font-family: var(--x-sans); }
+.x-on .ap-btn { border-radius: 0; }
+.x-on .ap-btn.allow { background: var(--x-warn); color: var(--x-warn-ink); }

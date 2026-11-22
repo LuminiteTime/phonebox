@@ -1,0 +1,52 @@
+/* Design tokens of the fork's "instrument" look. Components use these names only: no raw colours or timings. */
+@font-face { font-family: "Geist"; src: url("vendor/fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("vendor/fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+:root {
+  /* surfaces: cool graphite, neutrals tinted toward the hue 255 */
+  --x-bg: oklch(0.16 0.008 255);
+  --x-raise: oklch(0.2 0.012 255);
+  --x-line: oklch(0.27 0.012 255);
+  --x-off: oklch(0.27 0.012 255);
+  --x-text: oklch(0.94 0.008 240);
+  --x-muted: oklch(0.62 0.015 255);
+  --x-dim: oklch(0.48 0.012 255);
+
+  /* signals: colour means load or state, never decoration */
+  --x-ok: oklch(0.8 0.14 150);
+  --x-warn: oklch(0.83 0.15 78);
+  --x-warn-ink: oklch(0.22 0.04 78);
+  --x-crit: oklch(0.7 0.19 32);
+  --x-crit-ink: oklch(0.2 0.04 32);
+  --x-crit-dim: oklch(0.58 0.15 32);
+  --x-claude: oklch(0.74 0.14 45);
+  --x-net: oklch(0.78 0.07 230);
+
+  /* type: one sans for words, one mono for numbers and labels */
+  --x-sans: "Geist", Roboto, system-ui, sans-serif;
+  --x-mono: "Geist Mono", "Roboto Mono", ui-monospace, monospace;
+  --x-fs-label: 11px;
+  --x-fs-small: 12.5px;
+  --x-fs-body: 14px;
+  --x-fs-title: 20px;
+  --x-fs-num-s: 34px;
+  --x-fs-num: 52px;
+  --x-fs-num-l: 84px;
+
+  /* space */
+  --x-bar-h: 44px;
+  --x-cell-pad: 16px 18px;
+  --x-gap: 8px;
+  --x-hit: 60px;
+
+  /* motion: calm, state changes only */
+  --x-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --x-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --x-t-fast: 200ms;
+  --x-t: 700ms;
+  --x-t-slow: 1400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --x-t-fast: 1ms; --x-t: 1ms; --x-t-slow: 1ms; }
+}
