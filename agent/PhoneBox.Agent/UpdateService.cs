@@ -90,7 +90,7 @@ public sealed class UpdateService(ConfigStore cfg, AdbReverse adb, IHostApplicat
             {
                 await CheckAsync(ct);
                 // a failed check (GitHub answering 504 now and then) is retried soon instead of in 6 hours
-                nextCheck = DateTime.UtcNow + (_error?.StartsWith("Update check failed") == true ? TimeSpan.FromMinutes(15) : TimeSpan.FromHours(6));
+                nextCheck = DateTime.UtcNow + (_error?.StartsWith("Update check failed") == true ? TimeSpan.FromMinutes(15) : TimeSpan.FromHours(1)); // fork: every hour, releases follow each push
             }
             if (cfg.Get().Updates.Auto) await ApplyAsync(ct);
             await Task.Delay(TimeSpan.FromMinutes(1), ct);

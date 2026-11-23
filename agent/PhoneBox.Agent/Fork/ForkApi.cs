@@ -16,6 +16,14 @@ public static class ForkApi
             ctx.Response.Headers["X-Version"] = a.Version;
             return Results.File(a.Path, "application/vnd.android.package-archive");
         });
+
+        app.MapGet("/api/fork/digest", (Digest digest) => Results.Json(new { items = digest.Items, mirror = digest.Mirror }));
+        app.MapPost("/api/fork/digest/open", (string? id, Digest digest) =>
+            digest.Open(id) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
+
+        app.MapGet("/api/fork/dev", (DevStatus dev) => Results.Json(new { servers = dev.Servers, vpn = dev.Vpn }));
+        app.MapPost("/api/fork/dev/open", (int port, DevStatus dev) =>
+            dev.Open(port) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
     }
 
     internal static bool IsNewer(string candidate, string current) =>
