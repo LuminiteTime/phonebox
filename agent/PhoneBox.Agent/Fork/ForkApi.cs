@@ -42,32 +42,48 @@ public static class ForkApi
         app.MapGet("/api/fork/gpu", (GpuProcesses gpu) => Results.Json(new { top = gpu.Top }));
         app.MapGet("/api/fork/music", async (YandexMusic music, YandexAuth auth, CancellationToken ct) =>
         {
-            try { return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked = await music.LikedAsync(LikedShown, ct) }); }
-            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
+            try
+            {
+                var (liked, nowLiked) = await music.LikedAsync(LikedShown, ct);
+                return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked, now = await music.NowAsync(ct), nowLiked });
+            }
+            catch (Exception ex) when (IsYandexDown(ex))
             { return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked = Array.Empty<LikedTrack>(), error = ex.Message }); }
         });
         // the panel shows the code, the Mac opens the page to type it in
-        app.MapPost("/api/fork/music/login", async (YandexAuth auth, CancellationToken ct) =>
+        app.MapPost("/api/fork/music/login", (YandexAuth auth, CancellationToken ct) => Yandex(async () =>
         {
-            try { var login = await auth.StartLoginAsync(ct); Open(login.Url); return Results.Json(login); }
-            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
-            { return Results.BadRequest(new { error = "Яндекс недоступен: " + ex.Message }); }
-        });
-        app.MapPost("/api/fork/music/{rating:regex(^(like|dislike)$)}", async (string rating, YandexMusic music, CancellationToken ct) =>
+            var login = await auth.StartLoginAsync(ct);
+            Open(login.Url);
+            return Results.Json(login);
+        }));
+        app.MapPost("/api/fork/music/like", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
         {
-            try { return await music.RateAsync(rating == "like", ct) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }); }
-            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
-            { return Results.BadRequest(new { error = "Яндекс недоступен: " + ex.Message }); }
-        });
+            var (liked, error) = await music.ToggleLikeAsync(ct);
+            return error is null ? Results.Json(new { liked }) : Results.BadRequest(new { error });
+        }));
+        app.MapPost("/api/fork/music/dislike", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
+            await music.DislikeAsync(ct) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true })));
+        app.MapGet("/api/fork/music/cover", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
+            await music.CoverAsync(ct) is { } jpeg ? Results.File(jpeg, "image/jpeg") : Results.NotFound()));
+        app.MapPost("/api/fork/music/track", (string id, string? album) =>
+            long.TryParse(id, out var track) ? OpenOnMac(long.TryParse(album, out var a) ? $"https://music.yandex.ru/album/{a}/track/{track}" : $"https://music.yandex.ru/track/{track}") : Results.BadRequest());
         app.MapPost("/api/fork/music/wave", () => OpenOnMac("https://music.yandex.ru/"));
-        app.MapPost("/api/fork/music/track", (string id) =>
-            long.TryParse(id, out var track) ? OpenOnMac($"https://music.yandex.ru/track/{track}") : Results.BadRequest());
         app.MapGet("/api/fork/dev", (DevStatus dev) => Results.Json(new { servers = dev.Servers, vpn = dev.Vpn }));
         app.MapPost("/api/fork/dev/open", (int port, DevStatus dev) =>
             dev.Open(port) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
     }
 
     private const int LikedShown = 12;
+
+    private static bool IsYandexDown(Exception ex) =>
+        ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException;
+
+    private static async Task<IResult> Yandex(Func<Task<IResult>> call)
+    {
+        try { return await call(); }
+        catch (Exception ex) when (IsYandexDown(ex)) { return Results.BadRequest(new { error = "Яндекс недоступен: " + ex.Message }); }
+    }
 
     private static IResult OpenOnMac(string url) { Open(url); return Results.Ok(new { ok = true }); }
 
