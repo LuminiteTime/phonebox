@@ -16,7 +16,9 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
 {
     private readonly HttpClient _http = new() { BaseAddress = new Uri("https://api.music.yandex.net"), Timeout = TimeSpan.FromSeconds(10) };
     private (string Key, CatalogTrack? Track) _now = ("", null);
+    private (string Id, bool Liked) _liked = ("", false); // the playing track's like: the full list is thousands of tracks
     private (string Key, byte[] Bytes) _cover = ("", []);
+    private string _uid = "";
 
     /// <summary>The playing track in the catalog, or null (nothing plays, signed out, no match). Remembered per song.</summary>
     public async Task<CatalogTrack?> NowAsync(CancellationToken ct)
@@ -30,23 +32,26 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
         return track;
     }
 
-    /// <summary>Likes the playing track, or takes the like back when it has one; the new state, or an error.</summary>
-    public async Task<(bool Liked, string? Error)> ToggleLikeAsync(CancellationToken ct)
+    /// <summary>Likes the playing track or takes the like back (a set, not a toggle: a repeated tap cannot undo itself).</summary>
+    public async Task<string?> SetLikeAsync(bool on, CancellationToken ct)
     {
-        if (await NowAsync(ct) is not { } track) return (false, NotFound());
-        var uid = await UidAsync(ct);
-        var liked = (await LikedIdsAsync(uid, ct)).Contains(track.Id);
-        var error = await PostIdsAsync($"/users/{uid}/likes/tracks/{(liked ? "remove" : "add-multiple")}", track, ct);
-        return (error is null ? !liked : liked, error);
+        if (await NowAsync(ct) is not { } track) return NotFound();
+        var error = await PostIdsAsync($"/users/{await UidAsync(ct)}/likes/tracks/{(on ? "add-multiple" : "remove")}", track, ct);
+        if (error is null) _liked = (track.Id, on);
+        return error;
     }
 
     /// <summary>Dislikes the playing track (Yandex then leaves it out of My Wave); an error, or null.</summary>
     public async Task<string?> DislikeAsync(CancellationToken ct) =>
         await NowAsync(ct) is { } track ? await PostIdsAsync($"/users/{await UidAsync(ct)}/dislikes/tracks/add-multiple", track, ct) : NotFound();
 
-    /// <summary>Whether the playing track is among the liked ones.</summary>
-    public async Task<bool> NowLikedAsync(CancellationToken ct) =>
-        await NowAsync(ct) is { } now && (await LikedIdsAsync(await UidAsync(ct), ct)).Contains(now.Id);
+    /// <summary>Whether the playing track is among the liked ones; read once per track, then kept up to date here.</summary>
+    public async Task<bool> NowLikedAsync(CancellationToken ct)
+    {
+        if (await NowAsync(ct) is not { } now) return false;
+        if (_liked.Id != now.Id) _liked = (now.Id, (await LikedIdsAsync(await UidAsync(ct), ct)).Contains(now.Id));
+        return _liked.Liked;
+    }
 
     /// <summary>The playing track's cover at 800 px (JPEG), or null.</summary>
     public async Task<byte[]?> CoverAsync(CancellationToken ct)
@@ -89,11 +94,11 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
         return r.IsSuccessStatusCode ? null : $"Яндекс ответил {(int)r.StatusCode}";
     }
 
-    // ponytail: asked on every call (one small request); cache it per token if that ever matters
     private async Task<string> UidAsync(CancellationToken ct)
     {
+        if (_uid.Length > 0) return _uid;
         using var doc = await JsonAsync(HttpMethod.Get, "/account/status", null, ct);
-        return doc.RootElement.GetProperty("result").GetProperty("account").GetProperty("uid").ToString();
+        return _uid = doc.RootElement.GetProperty("result").GetProperty("account").GetProperty("uid").ToString();
     }
 
     private async Task<JsonDocument> JsonAsync(HttpMethod method, string path, HttpContent? body, CancellationToken ct)
@@ -108,7 +113,7 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
         var req = new HttpRequestMessage(method, path) { Content = body };
         req.Headers.Authorization = new AuthenticationHeaderValue("OAuth", await auth.AccessTokenAsync(ct) ?? "");
         var r = await _http.SendAsync(req, ct);
-        if (r.StatusCode == System.Net.HttpStatusCode.Unauthorized) auth.SignOut(); // revoked: the panel offers to sign in again
+        if (r.StatusCode == System.Net.HttpStatusCode.Unauthorized) { auth.SignOut(); _uid = ""; } // revoked: the panel offers to sign in again
         return r;
     }
 }

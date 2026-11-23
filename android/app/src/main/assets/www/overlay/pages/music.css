@@ -16,6 +16,9 @@
 .x-media .art-wrap { grid-area: art; align-self: end; width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; box-shadow: 0 24px 60px -20px rgba(var(--x-art), .55); background: var(--x-raise); }
 .x-media .art { border-radius: 0; }
 .x-media .art.on + .art-ph { display: none; }
+/* next / back pressed: the song on screen is on its way out */
+.x-media :is(.art-wrap, .m-text, .m-progress) { transition: opacity .25s cubic-bezier(.25, 1, .5, 1); }
+.x-media.x-switching :is(.art-wrap, .m-text, .m-progress) { opacity: .35; }
 
 .x-media .m-text { grid-area: meta; align-self: end; gap: 12px; min-width: 0; }
 .x-media .m-app { font: var(--x-fs-label) var(--x-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--x-acc); }
