@@ -36,6 +36,8 @@ Wi-Fi) рядом с MacBook в спокойную приборную панел
 | `www/index.html` | подключение `overlay/overlay.css` и `overlay/index.js` |
 | `agent/PhoneBox.Agent/widgets.json` | описания наших виджетов в конце массива |
 | `agent/PhoneBox.Agent/templates.json` | наши шаблоны страниц в конце массива |
+| `agent/PhoneBox.Agent/Program.cs`, `Lan.cs` | `AddFork()`, `MapFork()`, `/api/fork` в allow-list |
+| `agent/PhoneBox.Agent/settings.html` | `overlay/admin.css` после встроенных стилей |
 
 Каждая страница форка — один виджет на всю сетку 12 × 6 (`x-system`, `x-claude`, …), зарегистрированный в
 upstream-реестре `W`. Навигация, свайпы, правила, ночной режим, окно разрешений Claude остаются upstream-овскими;
@@ -45,9 +47,27 @@ overlay их перекрашивает и добавляет шапку с вк
 
 ### Данные
 
-Только то, что агент уже отдаёт (`/api/state`, `/procs`, `/quotas`, `/work`, `/docker`, ярлыки `/run/<id>`).
-Чего у агента нет (GPU по процессам на macOS, давление памяти, Яндекс.Музыка, дайджест), появится на этапе
-сервиса-компаньона; до этого интерфейс честно этого не показывает.
+Upstream-данные агента (`/api/state`, `/procs`, `/quotas`, `/work`, `/docker`, ярлыки `/run/<id>`, микрофон и
+камера из `PrivacyMonitor`) плюс свои эндпоинты форка в `agent/PhoneBox.Agent/Fork/` (отдельный компаньон не
+понадобился: форк собирает и обновляет собственный агент):
+
+| Эндпоинт | Что отдаёт |
+|---|---|
+| `GET /api/fork/gpu` | топ приложений по GPU (время Metal-клиентов из `ioreg`) |
+| `GET /api/fork/claude` | токены Claude Code по дням из `~/.claude/projects/**/*.jsonl` |
+| `GET /api/fork/dev`, `POST …/open?port=` | dev-серверы (`lsof`: порт, программа, проект) и VPN (`scutil`, маршрут) |
+| `GET /api/fork/digest`, `POST …/open?id=` | дайджест Habr / HN / Medium, Medium через проверенное зеркало |
+| `GET /api/fork/music`, `POST …/like`, `…/dislike`, `…/wave`, `…/track?id=` | Яндекс Музыка |
+| `GET /api/fork/app?have=` | новый APK для самообновления приложения |
+
+Яндекс Музыке нужен OAuth-токен в файле `~/.config/phonebox-fork/yandex-music.token` (права 600). Его можно получить
+на `https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d`
+(клиент мобильного приложения Музыки), значение `access_token` из адреса после входа.
+
+Дайджест: Habr (топ дня и недели, сложность «средне» и выше, рейтинг от 15, потоки разработка / администрирование /
+AI), главная HN от 150 очков, инженерные блоги на Medium (Netflix, Airbnb, Lyft, Pinterest, Expedia) и Medium-ссылки с
+HN. Зеркала обхода пейволла (`freedium-mirror.cfd`, `freedium.cfd`, `readmedium.com`) проверяются раз в 6 часов на
+реальной статье: берётся первое, что отдаёт полный текст; если ни одно не работает, ссылка ведёт на оригинал.
 
 ### Визуальный язык
 
@@ -84,7 +104,9 @@ overlay их перекрашивает и добавляет шапку с вк
 3. Деки (ярлыки агента) и Dev (Docker/OrbStack, локальные серверы).
 4. Музыка на данных агента (Now Playing); Яндекс-специфика — этап компаньона.
 5. Сборка APK со стабильной подписью, установка на планшет.
-6. Компаньон: Яндекс.Музыка (Ynison + REST), GPU по процессам (`ioreg`), дайджест с обходом paywall.
+6. Свои эндпоинты агента: Яндекс Музыка (REST), GPU по процессам (`ioreg`), дайджест с обходом paywall, dev-серверы,
+   VPN, токены Claude. Самообновление агента и приложения из релизов форка.
+7. Настройки на Mac в том же виде: `overlay/admin.css` перекрашивает токены страницы настроек.
 
 ## Running it
 
