@@ -63,3 +63,9 @@
 .x-dot.ok::before { color: var(--x-ok); }
 .x-dot.warn { color: var(--x-warn); } .x-dot.warn::before { color: var(--x-warn); }
 .x-dot.crit::before { color: var(--x-crit); }
+
+/* tappable rows: servers, articles, tracks */
+.x-rows { flex: 1; min-height: 0; overflow: auto; margin-top: 10px; }
+.x-row { all: unset; box-sizing: border-box; display: grid; width: 100%; gap: 4px 12px; padding: 11px 0; border-bottom: 1px dashed var(--x-line); cursor: pointer; }
+.x-row:active { background: var(--x-raise); }
+.x-row small { font: var(--x-fs-small) var(--x-mono); color: var(--x-muted); }

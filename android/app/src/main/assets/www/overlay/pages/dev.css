@@ -10,11 +10,6 @@
 .x-dev .dk-list > * { border-radius: 0; background: none; border: 0; border-bottom: 1px dashed var(--x-line); padding: 10px 0; }
 .x-dev .empty { font: var(--x-fs-small) var(--x-mono); color: var(--x-dim); margin-top: 14px; }
 
-/* tappable rows: servers and articles */
-.x-rows { flex: 1; min-height: 0; overflow: auto; margin-top: 10px; }
-.x-row { all: unset; box-sizing: border-box; display: grid; width: 100%; gap: 4px 12px; padding: 11px 0; border-bottom: 1px dashed var(--x-line); cursor: pointer; }
-.x-row:active { background: var(--x-raise); }
-.x-row small { font: var(--x-fs-small) var(--x-mono); color: var(--x-muted); }
 .x-row.srv { grid-template-columns: 72px 1fr auto; align-items: baseline; }
 .x-row.srv b { font: 500 var(--x-fs-body) var(--x-mono); color: var(--x-ok); }
 .x-row.art { grid-template-columns: 64px 1fr; }

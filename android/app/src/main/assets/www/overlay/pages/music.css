@@ -1,12 +1,12 @@
 /* "Музыка": the cover on the left, the track and the controls on the right, sized for a glance and a thumb. */
-.x-music { grid-template: 1fr / 1fr; }
-.x-music .x-cell { padding: 40px 48px; }
-.x-media.w-media { height: 100%; padding: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 1fr auto auto; column-gap: 56px; row-gap: 28px; }
+.x-music { grid-template: 1fr / 1fr 360px; }
+.x-music .x-cell:first-child { padding: 32px 40px; }
+.x-media.w-media { height: 100%; padding: 0; display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); grid-template-rows: 1fr auto auto; column-gap: 40px; row-gap: 28px; }
 .x-media .m-top { display: contents; }
-.x-media .art-wrap { grid-row: 1 / -1; align-self: center; height: min(100%, 600px); border-radius: 0; box-shadow: none; background: var(--x-raise); }
+.x-media .art-wrap { grid-row: 1 / -1; align-self: center; height: min(100%, 420px); border-radius: 0; box-shadow: none; background: var(--x-raise); }
 .x-media .m-text { align-self: end; gap: 10px; }
 .x-media .m-app { font: var(--x-fs-label) var(--x-mono); letter-spacing: .12em; color: var(--x-muted); }
-.x-media .m-title { font: 600 44px/1.1 var(--x-sans); letter-spacing: -0.02em; }
+.x-media .m-title { font: 600 38px/1.1 var(--x-sans); letter-spacing: -0.02em; }
 .x-media .m-artist { font: 22px var(--x-sans); color: var(--x-muted); }
 
 .x-media .bar::before, .x-media .fill { height: 3px; border-radius: 0; }
@@ -15,13 +15,24 @@
 .x-media .times { margin-top: 8px; font: var(--x-fs-small) var(--x-mono); }
 
 .x-media .m-controls { gap: 0; border-top: 1px solid var(--x-line); border-left: 1px solid var(--x-line); }
-.x-media .ic { width: 88px; height: 76px; border-radius: 0; border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); color: var(--x-text); }
+.x-media .ic { width: 76px; height: 76px; border-radius: 0; border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); color: var(--x-text); }
 .x-media .ic svg { width: 28px; height: 28px; }
 .x-media .ic:active { transform: none; background: var(--x-raise); }
-.x-media .ic.play { width: 112px; height: 76px; background: var(--x-text); color: var(--x-bg); }
-.x-media .vol { align-self: stretch; padding: 0 20px; border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); }
-.x-media .ic.sm { width: 40px; height: 40px; border: 0; }
-.x-media .vol-val { width: 32px; font: var(--x-fs-small) var(--x-mono); }
+.x-media .ic.play { width: 100px; height: 76px; background: var(--x-text); color: var(--x-bg); }
+.x-media .vol { flex: 1; min-width: 0; align-self: stretch; padding: 0 12px; border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); }
+.x-media .ic.sm { width: 32px; height: 40px; border: 0; }
+.x-media .vol-val { display: none; } /* the slider shows the level; the row has no room for both */
 .x-media input[type=range]::-webkit-slider-runnable-track { height: 3px; border-radius: 0; background: linear-gradient(to right, var(--x-text) var(--p, 50%), var(--x-off) var(--p, 50%)); }
 .x-media input[type=range]::-webkit-slider-thumb { width: 4px; height: 18px; border-radius: 0; margin-top: -7.5px; box-shadow: none; }
 .x-media .art.on + .art-ph { display: none; }
+
+/* Yandex Music column: three actions as a hairline row, then the liked tracks */
+.x-acts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 0 22px; border-top: 1px solid var(--x-line); border-left: 1px solid var(--x-line); }
+.x-act { all: unset; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; height: 84px;
+  border-right: 1px solid var(--x-line); border-bottom: 1px solid var(--x-line); font: var(--x-fs-label) var(--x-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--x-muted); cursor: pointer; }
+.x-act svg { width: 24px; height: 24px; color: var(--x-text); }
+.x-act:first-child svg { color: var(--x-claude); }
+.x-act:active { background: var(--x-raise); }
+.x-row.track { grid-template-columns: 1fr; gap: 2px; }
+.x-row.track span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.x-media .vol input[type=range] { flex: 1; min-width: 40px; }
