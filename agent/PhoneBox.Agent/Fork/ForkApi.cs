@@ -44,11 +44,8 @@ public static class ForkApi
             Open(login.Url);
             return Results.Json(login);
         }));
-        app.MapPost("/api/fork/music/like", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
-        {
-            var (liked, error) = await music.ToggleLikeAsync(ct);
-            return error is null ? Results.Json(new { liked }) : Results.BadRequest(new { error });
-        }));
+        app.MapPost("/api/fork/music/like", (bool on, YandexMusic music, CancellationToken ct) => Yandex(async () =>
+            await music.SetLikeAsync(on, ct) is { } error ? Results.BadRequest(new { error }) : Results.Json(new { liked = on })));
         app.MapPost("/api/fork/music/dislike", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
             await music.DislikeAsync(ct) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true })));
         app.MapGet("/api/fork/music/cover", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
