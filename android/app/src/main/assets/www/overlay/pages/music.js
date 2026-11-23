@@ -59,7 +59,7 @@ W['x-music'] = {
       const m = D.state?.media;
       const key = m ? `${m.artist}\n${m.title}` : '';
       if (key !== song) { song = key; large = ''; if (key) loadMusic(); } // a new song: its like and cover
-      if (!m || !fork.music?.token || large === 'failed') return;
+      if (!m || !fork.music?.now?.cover || large === 'failed') return; // the agent found the song and its cover
       large = `/fork/music/cover?song=${encodeURIComponent(key)}`;
       if (!img.src.endsWith(large)) img.src = API + large;
     };
