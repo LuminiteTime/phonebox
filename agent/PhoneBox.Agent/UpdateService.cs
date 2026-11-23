@@ -215,6 +215,22 @@ public sealed class UpdateService(ConfigStore cfg, AdbReverse adb, IHostApplicat
         }
     }
 
+    /// <summary>
+    /// Fork: the latest release's APK, checked against its SHA256SUMS, for a phone that installs it by itself
+    /// (Wi-Fi, no adb). Null while no release has an APK.
+    /// </summary>
+    public async Task<(string Version, string Path)?> LatestApkAsync(CancellationToken ct)
+    {
+        await _gate.WaitAsync(ct);
+        try
+        {
+            if (_latest?.Apk is null) await CheckCoreAsync(ct);
+            if (_latest?.Apk is not { } url) return null;
+            return (_latest.Version, await VerifiedDownloadAsync(url, $"PhoneBox-{_latest.Version}.apk", ct));
+        }
+        finally { _gate.Release(); }
+    }
+
     private async Task UpdatePhoneAsync(CancellationToken ct)
     {
         _state = "updating phone app";

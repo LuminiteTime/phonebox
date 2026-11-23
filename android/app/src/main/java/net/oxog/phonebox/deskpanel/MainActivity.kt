@@ -73,6 +73,7 @@ class MainActivity : Activity(), SensorEventListener {
     private var destroyed = false
     private val dictation by lazy { Dictation(this) { script -> if (!destroyed) web.evaluateJavascript(script, null) } }
     private lateinit var link: AgentLink
+    private lateinit var selfUpdate: SelfUpdate
     private lateinit var stream: AgentStream
     @Volatile private var resumed = false
     @Volatile private var volumeKeysFlipPages = true
@@ -92,6 +93,7 @@ class MainActivity : Activity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         link = AgentLink(this)
+        selfUpdate = SelfUpdate(this, link).also { it.start() } // fork: docs/fork/DESIGN.md
         stream = AgentStream(link) { event, data ->
             val js = "window.onAgentStream && window.onAgentStream(${JSONObject.quote(event)}, ${JSONObject.quote(data)})"
             runOnUiThread { if (!destroyed) web.evaluateJavascript(js, null) }
@@ -357,6 +359,7 @@ class MainActivity : Activity(), SensorEventListener {
         sensors?.unregisterListener(this)
         stream.stop()
         link.trackpadSocket.close()
+        selfUpdate.stop()
         link.close()
         if (hasWeb) {
             (web.parent as? ViewGroup)?.removeView(web) // a WebView must be detached before destroy()

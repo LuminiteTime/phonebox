@@ -64,3 +64,11 @@ dependencies {
     // android.jar's org.json is a stub on the JVM; the real one lets the unit tests build and read JSON
     testImplementation("org.json:json:20240303")
 }
+
+// fork: CI releases are numbered <upstream version>.<run> (.github/workflows/fork-release.yml); local builds keep
+// the upstream numbers
+androidComponents.onVariants { variant ->
+    val name = System.getenv("PHONEBOX_FORK_VERSION") ?: return@onVariants
+    val code = System.getenv("PHONEBOX_FORK_CODE")!!.toInt()
+    variant.outputs.forEach { it.versionName.set(name); it.versionCode.set(code) }
+}

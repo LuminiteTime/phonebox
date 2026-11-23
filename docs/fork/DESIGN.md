@@ -96,5 +96,16 @@ overlay их перекрашивает и добавляет шапку с вк
 - **APK:** `tools/fork/build-apk.sh` builds a release APK signed with a stable local key kept in
   `~/.config/phonebox-fork` (back it up). The first install replaces an upstream build, whose signature differs:
   uninstall that one first and pair again.
-- **Agent:** the agent embeds `www/overlay/**` for the layout editor's live preview. An upstream agent update replaces
-  `widgets.json` / `templates.json` and drops the fork's catalog entries until it is rebuilt from this repo.
+- **Agent:** the agent embeds `www/overlay/**` for the layout editor's live preview. Fork endpoints live in
+  `agent/PhoneBox.Agent/Fork/` under `/api/fork/*` (one line in the USB/Wi-Fi allow-list, `Lan.AllowedOverLan`).
+
+## Updates
+
+1. A push to `main` touching the agent or the app runs `.github/workflows/fork-release.yml`: release
+   `v<upstream version>.<run>` with the signed APK and the signed Mac agent (`osx-arm64`), plus `SHA256SUMS`.
+   Signing keys are repository secrets; local copies stay in `~/.config/phonebox-fork` (back them up).
+2. The agent's updater reads `Updates.Repo` (default `LuminiteTime/phonebox` in the fork), replaces itself and restarts.
+3. The app asks the agent every 15 minutes (`GET /api/fork/app?have=<version>`, USB or Wi-Fi) and installs a newer APK
+   with PackageInstaller (`SelfUpdate.kt`). Android 12+ installs silently once the app is its own installer of record;
+   the first self-update, and older systems, ask once.
+4. Merging upstream: `git fetch upstream && git merge upstream/main`, fix the README counts, push. The release follows.
