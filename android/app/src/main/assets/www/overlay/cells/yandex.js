@@ -1,19 +1,10 @@
-// Yandex Music next to the player: rate what is playing, start My Wave, and the newest liked tracks.
+// Yandex Music next to the player: My Wave and the newest liked tracks (the playing one marked). Rating the playing
+// track sits with the player (pages/music.js).
 // Actions run on the Mac through the agent (agent/PhoneBox.Agent/Fork/YandexMusic.cs).
 import { api, h, haptic, toast } from '../../main.js';
 import { cell, icon, label } from '../lib/ui.js';
 import { fork, loadMusic, openOnMac, pollMusic } from '../lib/fork.js';
 
-function action(name, text, onTap) {
-  const el = h('button', 'x-act', icon(name), h('span', null, text));
-  el.addEventListener('click', () => { haptic(); onTap(); });
-  return el;
-}
-
-async function rate(kind) {
-  try { await api(`/fork/music/${kind}`, 'POST', 12_000); toast(kind === 'like' ? 'В любимых' : 'Больше не покажу', 'ok'); }
-  catch (_) { toast(fork.music?.token ? 'Яндекс не принял' : 'Сначала войди в Яндекс', 'err'); }
-}
 
 // OAuth Device Flow (agent/PhoneBox.Agent/Fork/YandexAuth.cs): the agent opens Yandex's code page on the Mac, the panel
 // shows the code and checks every few seconds until the agent has the token or the code ran out.
@@ -37,13 +28,11 @@ function signInView(login) {
 export function yandexCell() {
   const list = h('div', 'x-rows liked');
   const head = label('Яндекс Музыка');
-  const actions = h('div', 'x-acts',
-    action('heart', 'Нравится', () => rate('like')),
-    action('ban', 'Не то', () => rate('dislike')),
-    action('activity', 'Моя волна', () => openOnMac('/fork/music/wave')));
+  const wave = h('button', 'x-wave', icon('activity'), h('span', null, h('b', null, 'Моя волна'), h('small', null, 'откроется на Mac')));
+  wave.addEventListener('click', () => { haptic(); openOnMac('/fork/music/wave'); });
   let key = '';
   return {
-    el: cell('end last', head, actions, label('Любимые'), list),
+    el: cell('end last', head, wave, label('Любимые'), list),
     update() {
       pollMusic();
       const m = fork.music;
@@ -54,8 +43,8 @@ export function yandexCell() {
       if (!m) { list.replaceChildren(h('div', 'x-empty', 'Нужен агент форка')); return; }
       if (!m.token) { list.replaceChildren(...signInView(m.login)); return; }
       list.replaceChildren(...m.liked.map((t) => {
-        const row = h('button', 'x-row track', h('span', null, t.title), h('small', null, t.artist));
-        row.addEventListener('click', () => { haptic(); openOnMac(`/fork/music/track?id=${encodeURIComponent(t.id)}`); });
+        const row = h('button', 'x-row track' + (t.id === m.now?.id ? ' now' : ''), h('span', null, t.title), h('small', null, t.artist));
+        row.addEventListener('click', () => { haptic(); openOnMac(`/fork/music/track?id=${encodeURIComponent(t.id)}&album=${encodeURIComponent(t.album)}`); });
         return row;
       }));
     },

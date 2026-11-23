@@ -9,10 +9,11 @@ public class YandexMusicTests
     private static JsonElement Json(string s) => JsonDocument.Parse(s).RootElement;
 
     [Fact]
-    public void TheFirstSearchHitIsTrackColonAlbum()
+    public void TheFirstSearchHitKeepsItsAlbumAndCover()
     {
-        Assert.Equal("123:45", YandexMusic.FirstTrack(Json("""{"tracks":{"results":[{"id":123,"albums":[{"id":45}]},{"id":9,"albums":[]}]}}""")));
-        Assert.Equal("7", YandexMusic.FirstTrack(Json("""{"tracks":{"results":[{"id":"7","albums":[]}]}}""")));
+        Assert.Equal(new LikedTrack("123", "45", "A", "X", "avatars.yandex.net/a/%%"),
+            YandexMusic.FirstTrack(Json("""{"tracks":{"results":[{"id":123,"title":"A","artists":[{"name":"X"}],"albums":[{"id":45}],"coverUri":"avatars.yandex.net/a/%%"},{"id":9}]}}""")));
+        Assert.Equal("", YandexMusic.FirstTrack(Json("""{"tracks":{"results":[{"id":"7","title":"B","artists":[],"albums":[]}]}}"""))!.Album);
         Assert.Null(YandexMusic.FirstTrack(Json("""{"tracks":{"results":[]}}""")));
         Assert.Null(YandexMusic.FirstTrack(Json("""{"best":null}""")));
     }
@@ -20,7 +21,7 @@ public class YandexMusicTests
     [Fact]
     public void TracksKeepTitleAndAllArtists()
     {
-        var tracks = YandexMusic.ParseTracks(Json("""[{"id":1,"title":"One More Time","artists":[{"name":"Daft Punk"},{"name":"Romanthony"}]}]"""));
-        Assert.Equal([new LikedTrack("1", "One More Time", "Daft Punk, Romanthony")], tracks);
+        var tracks = YandexMusic.ParseTracks(Json("""[{"id":1,"title":"One More Time","artists":[{"name":"Daft Punk"},{"name":"Romanthony"}],"albums":[{"id":2}]}]"""));
+        Assert.Equal([new LikedTrack("1", "2", "One More Time", "Daft Punk, Romanthony", "")], tracks);
     }
 }
