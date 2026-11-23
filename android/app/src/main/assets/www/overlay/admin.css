@@ -44,5 +44,7 @@ nav a[href="#agents"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Cs
 .x-steps { margin: 4px 0 16px; padding-left: 20px; line-height: 1.7; }
 .x-pair-state { margin-left: 12px; font: 12.5px var(--x-mono); color: var(--warn); }
 .x-pair-state.on { color: var(--ok); }
+.x-app-facts { font: 14px var(--x-mono); }
+.x-app-said { color: var(--muted); }
 input[type=range], input[type=checkbox] { accent-color: var(--text); }
 .x-off { display: none !important; }

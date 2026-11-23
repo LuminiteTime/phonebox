@@ -3,23 +3,23 @@ using System.Text.Json;
 
 namespace PhoneBox.Agent.Fork;
 
-/// <summary>A catalog track: what the panel lists and plays. Cover is an avatars address with %% for the size.</summary>
-public sealed record LikedTrack(string Id, string Album, string Title, string Artist, string Cover);
+/// <summary>A catalog track. Cover is an avatars address with %% for the size.</summary>
+public sealed record CatalogTrack(string Id, string Album, string Title, string Artist, string Cover);
 
 /// <summary>
 /// Yandex Music for the Music page (docs/fork/DESIGN.md): the playing track in the catalog (for its large cover and its
-/// like), like / unlike / dislike it, and the liked tracks.
+/// like), and like / unlike / dislike it.
 /// The playing track comes from the system's Now Playing (upstream MediaMonitor) and is found in the catalog by artist
 /// and title. The account comes from <see cref="YandexAuth"/>. The API answers some regions only with a token.
 /// </summary>
 public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
 {
     private readonly HttpClient _http = new() { BaseAddress = new Uri("https://api.music.yandex.net"), Timeout = TimeSpan.FromSeconds(10) };
-    private (string Key, LikedTrack? Track) _now = ("", null);
+    private (string Key, CatalogTrack? Track) _now = ("", null);
     private (string Key, byte[] Bytes) _cover = ("", []);
 
     /// <summary>The playing track in the catalog, or null (nothing plays, signed out, no match). Remembered per song.</summary>
-    public async Task<LikedTrack?> NowAsync(CancellationToken ct)
+    public async Task<CatalogTrack?> NowAsync(CancellationToken ct)
     {
         if (!auth.SignedIn || media.Snapshot() is not { Title.Length: > 0 } now) return null;
         var key = now.Artist + "\n" + now.Title;
@@ -44,18 +44,9 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
     public async Task<string?> DislikeAsync(CancellationToken ct) =>
         await NowAsync(ct) is { } track ? await PostIdsAsync($"/users/{await UidAsync(ct)}/dislikes/tracks/add-multiple", track, ct) : NotFound();
 
-    /// <summary>The newest liked tracks, newest first, and whether the playing one is among all the liked.</summary>
-    public async Task<(IReadOnlyList<LikedTrack> Liked, bool NowLiked)> LikedAsync(int max, CancellationToken ct)
-    {
-        if (!auth.SignedIn) return ([], false);
-        var uid = await UidAsync(ct);
-        var ids = await LikedIdsAsync(uid, ct);
-        var nowLiked = await NowAsync(ct) is { } now && ids.Contains(now.Id);
-        if (ids.Count == 0) return ([], nowLiked);
-        using var body = new FormUrlEncodedContent([new("track-ids", string.Join(",", ids.Take(max)))]);
-        using var tracks = await JsonAsync(HttpMethod.Post, "/tracks", body, ct);
-        return (ParseTracks(tracks.RootElement.GetProperty("result")), nowLiked);
-    }
+    /// <summary>Whether the playing track is among the liked ones.</summary>
+    public async Task<bool> NowLikedAsync(CancellationToken ct) =>
+        await NowAsync(ct) is { } now && (await LikedIdsAsync(await UidAsync(ct), ct)).Contains(now.Id);
 
     /// <summary>The playing track's cover at 800 px (JPEG), or null.</summary>
     public async Task<byte[]?> CoverAsync(CancellationToken ct)
@@ -67,17 +58,15 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
         return bytes;
     }
 
-    internal static List<LikedTrack> ParseTracks(JsonElement result) => result.EnumerateArray().Select(Track).ToList();
-
     /// <summary>The best catalog match of a search, or null.</summary>
-    internal static LikedTrack? FirstTrack(JsonElement result)
+    internal static CatalogTrack? FirstTrack(JsonElement result)
     {
         if (!result.TryGetProperty("tracks", out var tracks) || tracks.ValueKind != JsonValueKind.Object) return null;
         var first = tracks.GetProperty("results").EnumerateArray().FirstOrDefault();
         return first.ValueKind == JsonValueKind.Object ? Track(first) : null;
     }
 
-    private static LikedTrack Track(JsonElement t) => new(
+    private static CatalogTrack Track(JsonElement t) => new(
         t.GetProperty("id").ToString(),
         t.TryGetProperty("albums", out var albums) && albums.GetArrayLength() > 0 ? albums[0].GetProperty("id").ToString() : "",
         t.GetProperty("title").GetString() ?? "",
@@ -93,7 +82,7 @@ public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
             .Select(t => t.GetProperty("id").ToString()).ToList();
     }
 
-    private async Task<string?> PostIdsAsync(string path, LikedTrack track, CancellationToken ct)
+    private async Task<string?> PostIdsAsync(string path, CatalogTrack track, CancellationToken ct)
     {
         using var body = new FormUrlEncodedContent([new("track-ids", track.Album.Length > 0 ? $"{track.Id}:{track.Album}" : track.Id)]);
         using var r = await SendAsync(HttpMethod.Post, path, body, ct);
