@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -182,9 +181,7 @@ public sealed partial class Digest(ILogger<Digest> log) : BackgroundService
     {
         if (_items.FirstOrDefault(i => i.Id == id) is not { } item) return "Этой статьи уже нет в дайджесте";
         if (!Uri.TryCreate(item.Read, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps) return "Нет ссылки";
-        var psi = new ProcessStartInfo(OperatingSystem.IsMacOS() ? "/usr/bin/open" : "xdg-open") { UseShellExecute = false };
-        psi.ArgumentList.Add(uri.AbsoluteUri);
-        using var _ = Process.Start(psi);
+        ForkApi.Open(uri.AbsoluteUri);
         return null;
     }
 

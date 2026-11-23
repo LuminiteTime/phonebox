@@ -86,10 +86,7 @@ AddMonitor<ProcessMonitor>(builder.Services);
 AddMonitor<SessionMonitor>(builder.Services);
 AddMonitor<OpenCodeApprovals>(builder.Services);
 AddMonitor<FeedMonitor>(builder.Services);
-AddMonitor<Digest>(builder.Services); // fork: docs/fork/DESIGN.md
-AddMonitor<DevStatus>(builder.Services);
-AddMonitor<GpuProcesses>(builder.Services);
-AddMonitor<ClaudeTokens>(builder.Services);
+builder.Services.AddFork(); // fork: docs/fork/DESIGN.md
 builder.Services.AddSingleton<PhotoFrame>();
 builder.Services.AddSingleton<CameraFeeds>();
 AddMonitor<GitHubMonitor>(builder.Services);

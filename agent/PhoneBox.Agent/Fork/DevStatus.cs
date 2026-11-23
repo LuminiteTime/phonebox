@@ -96,7 +96,7 @@ public sealed class DevStatus(ILogger<DevStatus> log) : BackgroundService
     public string? Open(int port)
     {
         if (Servers.All(s => s.Port != port)) return "Этот сервер уже остановлен";
-        using var _ = Process.Start(new ProcessStartInfo("/usr/bin/open", $"http://localhost:{port}") { UseShellExecute = false });
+        ForkApi.Open($"http://localhost:{port}");
         return null;
     }
 
