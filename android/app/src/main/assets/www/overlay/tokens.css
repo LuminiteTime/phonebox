@@ -21,6 +21,8 @@
   --x-crit-dim: oklch(0.58 0.15 32);
   --x-claude: oklch(0.74 0.14 45);
   --x-net: oklch(0.78 0.07 230);
+  --x-src-habr: oklch(0.78 0.09 200);
+  --x-src-hn: oklch(0.8 0.13 60);
 
   /* type: one sans for words, one mono for numbers and labels */
   --x-sans: "Geist", Roboto, system-ui, sans-serif;

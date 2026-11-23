@@ -498,7 +498,31 @@
     return { ok: true };
   }
 
+  // fork: the fork's own agent endpoints (agent/PhoneBox.Agent/Fork, docs/fork/DESIGN.md)
+  const forkDemo = (path) => {
+    if (path === '/api/fork/dev') return {
+      vpn: { on: true, name: 'wireguard' },
+      servers: [[3000, 'node', 'storefront'], [5173, 'node', 'phonebox-admin'], [5432, 'postgres', ''], [8000, 'python3.12', 'ml-api']]
+        .map(([port, program, project], pid) => ({ port, program, project, pid })),
+    };
+    if (path === '/api/fork/digest') return {
+      mirror: 'https://freedium-mirror.cfd/',
+      items: [
+        ['Habr', 'GPU-ассемблер NVIDIA против AMD: архитектура и философия', 'средне · 22 мин', 3],
+        ['HN', 'GLM-5.4: Toward Generalized Coding with Our First Loop Transformer', '469 очк. · 197 комм.', 5],
+        ['Medium', 'Inference infrastructure at Netflix: serving models at the edge', 'Netflix TechBlog', 26],
+        ['Habr', 'Вскрытие Claude Code: что внутри 225 мегабайт', 'средне · 13 мин', 8],
+        ['HN', 'XNU Linux: Full OS X GUI Userspace on Linux', '457 очк. · 184 комм.', 9],
+        ['Medium', 'How Airbnb rebuilt search ranking with two-tower models', 'The Airbnb Tech Blog', 50],
+        ['Habr', 'Пишем с нуля C++/CUDA-движок для инференса', 'сложно · 9 мин', 12],
+        ['HN', "A Beginner's Guide to Local AI with Qwen and Unsloth", '620 очк. · 256 комм.', 14],
+      ].map(([source, title, meta, hours], i) => ({ id: `d${i}`, source, title, meta, score: 0, published: START - hours * 3600_000, url: '', read: '' })),
+    };
+    return { ok: true };
+  };
+
   async function handle(method, path, q, body, headers) {
+    if (path.startsWith('/api/fork/')) return json(forkDemo(path));
     if (path === '/api/controls/obs') return json(deckObsState());
     if (path.startsWith('/api/controls/obs/') && method === 'POST') {
       // ObsMonitor.DeckAct: only when a widget allows control, and only for inputs, sources and scenes OBS really has

@@ -1,9 +1,27 @@
-/* "Dev": containers on the left, the digest on the right, rows as hairline lists. */
-.x-dev { grid-template: 1fr / 1fr 1.2fr; }
+/* "Dev": containers over servers on the left, the digest down the right; rows are hairline lists. */
+.x-dev { grid-template: "box art" 1fr "srv art" 1fr / 1fr 1.25fr; }
+.x-dev > .x-cell:nth-child(1) { grid-area: box; }
+.x-dev > .x-cell:nth-child(2) { grid-area: art; }
+.x-dev > .x-cell:nth-child(3) { grid-area: srv; }
 .x-embed { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.x-dev .w-title { display: flex; justify-content: space-between; font: var(--x-fs-label) var(--x-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--x-muted); }
-.x-dev .dk-list, .x-dev .fd-list { flex: 1; min-height: 0; overflow: auto; margin-top: 10px; }
-.x-dev .dk-list > *, .x-dev .fd-list > * { border-radius: 0; background: none; border: 0; border-bottom: 1px dashed var(--x-line); }
-.x-dev .empty { font: var(--x-fs-small) var(--x-mono); color: var(--x-dim); margin-top: 14px; }
 .x-dev .x-embed { padding: 0; }
-.x-dev .dk-list > *, .x-dev .fd-list > * { padding: 10px 0; }
+.x-dev .w-title { display: flex; justify-content: space-between; font: var(--x-fs-label) var(--x-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--x-muted); }
+.x-dev .dk-list { flex: 1; min-height: 0; overflow: auto; margin-top: 10px; }
+.x-dev .dk-list > * { border-radius: 0; background: none; border: 0; border-bottom: 1px dashed var(--x-line); padding: 10px 0; }
+.x-dev .empty { font: var(--x-fs-small) var(--x-mono); color: var(--x-dim); margin-top: 14px; }
+
+/* tappable rows: servers and articles */
+.x-rows { flex: 1; min-height: 0; overflow: auto; margin-top: 10px; }
+.x-row { all: unset; box-sizing: border-box; display: grid; width: 100%; gap: 4px 12px; padding: 11px 0; border-bottom: 1px dashed var(--x-line); cursor: pointer; }
+.x-row:active { background: var(--x-raise); }
+.x-row small { font: var(--x-fs-small) var(--x-mono); color: var(--x-muted); }
+.x-row.srv { grid-template-columns: 72px 1fr auto; align-items: baseline; }
+.x-row.srv b { font: 500 var(--x-fs-body) var(--x-mono); color: var(--x-ok); }
+.x-row.art { grid-template-columns: 64px 1fr; }
+.x-row.art span { font-size: 15px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.x-row.art small { grid-column: 2; }
+.x-row.art.read span { color: var(--x-dim); }
+.x-row .src { grid-row: span 2; font: var(--x-fs-label) var(--x-mono); letter-spacing: .1em; text-transform: uppercase; font-style: normal; padding-top: 3px; color: var(--x-muted); }
+.x-row .src.habr { color: var(--x-src-habr); }
+.x-row .src.hn { color: var(--x-src-hn); }
+.x-row .src.medium { color: var(--x-text); }

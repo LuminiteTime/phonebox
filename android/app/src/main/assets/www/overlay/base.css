@@ -40,3 +40,11 @@
 .x-on .ap-btn { border-radius: 0; }
 .x-on .ap-btn.allow { background: var(--x-warn); color: var(--x-warn-ink); }
 html:not(.x-on) #x-bar { display: none; }
+
+/* bar chips: VPN state always, microphone and camera only while in use */
+#x-bar .x-live { display: flex; gap: 14px; }
+#x-bar .x-chip { display: flex; align-items: center; gap: 6px; color: var(--x-dim); }
+#x-bar .x-chip[hidden] { display: none; }
+#x-bar .x-chip svg { width: 14px; height: 14px; }
+#x-bar .x-chip.ok { color: var(--x-ok); }
+#x-bar .x-chip.crit { color: var(--x-crit); }
