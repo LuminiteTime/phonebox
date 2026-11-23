@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "لم يعد هذا التطبيق في القائمة",
       "w.discord.shareNotDirect": "لا يستطيع Discord مشاركة هذا التطبيق مباشرة: استخدم اختر على الكمبيوتر",
       "w.discord.shareRefused": "لا يسمح Discord هذا لـ PhoneBox بمتابعة مشاركة الشاشة",
+      "w.discord.chat": "الدردشة",
+      "w.discord.closeChat": "العودة إلى القنوات",
+      "w.discord.chatOff": "فعّل الدردشة من الإعدادات › عام › Discord",
+      "w.discord.chatApprove": "وافق على PhoneBox في Discord لرؤية الدردشة",
+      "w.discord.pickChannel": "اختر قناة",
+      "w.discord.voiceChat": "دردشة القناة الصوتية",
+      "w.discord.openInDiscord": "فتح في Discord",
+      "w.discord.noMessages": "لا توجد رسائل بعد",
       "w.discord.turnOn": "تشغيل Discord في الإعدادات › العامة",
       "w.discord.failed": "Discord لم يفعلها",
       "w.discord.otherServer": "مصادر أخرى",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "لإجراءات /api/discord في الوكيل: كتم الميكروفون والصوت ووضع الإدخال والمغادرة والانضمام. معطّل: تعمل فقط ما دامت هناك أداة Discord مفعّل فيها التحكم في صفحة مفعّلة. مفعّل: تعمل من دونها. وفي الحالتين يمكن لكل ما يستطيع استدعاء الوكيل استخدامها، لا الأداة وحدها: الهاتف المقترن (USB أو Wi-Fi) والبرامج على هذا الكمبيوتر.",
       "s.discord.screenShare": "بدء مشاركة الشاشة في Discord وإيقافها من الهاتف",
       "s.discord.screenShareHint": "يطلب من Discord إذن بدء مشاركة الشاشة، لذا سيطلب منك Discord الموافقة على PhoneBox مرة أخرى. ما دامت شاشة المشاركة مفتوحة على الهاتف، يعرض PhoneBox التطبيقات التي لها نافذة على هذا الكمبيوتر (الأسماء فقط). يقرر Discord ما يمكنه مشاركته مباشرة؛ ولغير ذلك استخدم أداة الاختيار الخاصة به على الكمبيوتر. يتطلب أيضًا أداة Discord مفعّل فيها التحكم.",
+      "s.discord.chat": "عرض دردشة Discord ونقاط الرسائل الجديدة على الهاتف (للقراءة فقط)",
+      "s.discord.chatHint": "يرسل إلى الهاتف نص القنوات التي تفتحها في الأداة. يطلب من Discord إذن قراءة الرسائل، لذا سيطلب منك Discord الموافقة على PhoneBox مرة أخرى. يبقى النص في الذاكرة فقط (لا يُكتب أبدًا في ملف أو سجل) ويختفي عند انقطاع Discord أو إيقاف هذا الخيار. إذا رفضت، تبقى الدردشة وحدها متوقفة.",
       "w.steam.turnOn": "اتصال Steam في الإعدادات › عام",
       "w.steam.stale": "فشل تجديد Steam؛ عرض بيانات أقدم",
       "w.steam.onlineCount": "{online} على الإنترنت {total} أصدقاء",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "خطافات الويب (Webhooks)",
       "s.nav.general": "الإعدادات العامة",
       "s.nav.advanced": "إعدادات متقدمة",
-      "s.pages.lead": "كل صفحة هي شبكة 12 × 6 من الأدوات. اختار صفحة على اليسار، ترتيب أدواتها على الهاتف أدناه وتحديد خياراتهم. اسحب الصفحات لإعادة ترتيبها؛ الأولى هي الصفحة الرئيسية التي تعود اللوح إلى عندما تكون غير نشطة. على الهاتف، المس، استخدام مفاتيح الصوت، أو النقر على النقاط (أو الضغط الطويل على صفحة) لمحة عامة عن جميع الصفحات.",
+      "s.pages.lead": "كل صفحة هي شبكة 12 × 6 من الأدوات. اختار صفحة على اليسار، ترتيب أدواتها على الهاتف أدناه وتحديد خياراتهم. اسحب الصفحات لإعادة ترتيبها؛ الأولى هي الصفحة الرئيسية التي تعود اللوح إلى عندما تكون غير نشطة. على الهاتف، اسحب، أو استخدم مفاتيح الصوت، أو انقر على نقطة للانتقال إلى صفحتها (أو مرّر إصبعك على النقاط لاختيار صفحة)؛ انقر على النقطة الحالية أو زر الشبكة بجانب النقاط، أو اضغط مطولًا على مكان فارغ في صفحة، لعرض جميع الصفحات.",
       "s.pages.layout": "التخطيط",
       "s.pages.livePreview": "معاينة مباشرة",
       "s.shortcuts.lead": "تظهر هذه الاختصارات في عنصري شبكة الاختصارات والزر الكبير. انقر على اختصار لتحريره أو اسحبه لتغيير ترتيبه. يرسل الهاتف معرّف الاختصار فقط، وتبقى الأوامر على هذا الكمبيوتر.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "دقائق قبل ظهور الشاشة الليلية",
       "s.display.proximityWake": "يد بالقرب من الهاتف يثير الشاشة الليلية",
       "s.display.controlsTop": "النقاط في الصفحة وأزرار السماح / الرفض في أعلى الشاشة",
+      "s.display.pageBar": "التنقل بين الصفحات",
+      "s.display.pageBar.dots": "نقاط",
+      "s.display.pageBar.auto": "شريط الصفحات عند لمس النقاط",
+      "s.display.pageBar.bar": "شريط الصفحات، ظاهر دائمًا",
+      "s.display.pageBarSide": "موضع شريط الصفحات",
+      "s.display.pageBarSide.bottom": "أسفل",
+      "s.display.pageBarSide.left": "يسار",
+      "s.display.pageBarSide.right": "يمين",
+      "s.display.pageBarHint": "يعرض شريط الصفحات أيقونة كل صفحة واسمها؛ انقر على إحداها للانتقال إليها. عندما يكون ظاهرًا دائمًا يشغل شريطًا من الشاشة وتصغر الصفحات قليلًا.",
       "s.oled.title": "الحماية من احتراق شاشة OLED",
       "s.oled.pixelShift": "تحرك اللوحة ببضعة بكسل كل دقيقتين، وساعة الليل حول الشاشة",
       "s.oled.idleDim": "خفض سطوع اللوحة بعد (دقائق بدون لمسة، صفر = أبداً)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "عنوان مشغّل Plex",
       "s.cd.plexCheck": "فحص اتصال Plex",
       "s.cd.plexHint": "يتطلب التحكم في Plex مشغّل Plex Companion مثل Caldera Amp على هذا الكمبيوتر. شغّل Caldera Amp مرة واحدة وسجّل الدخول؛ يبقى يعمل في الخلفية وليست له نافذة يجب إبقاؤها مفتوحة. أما Plexamp على هذا الكمبيوتر فيعمل مع أدوات الوسائط المعتادة. الصق عنوان خادم Plex ورمز X-Plex-Token الخاص بك.",
-      "s.cd.plexChecking": "جارٍ الفحص…"
+      "s.cd.plexPlaylistHint": "الهدف: معرّف قائمة تشغيل Plex. اختر واحدة من القائمة أدناه.",
+      "s.cd.plexLoadLists": "تحميل قوائم تشغيل Plex",
+      "s.cd.plexFull": "Control Deck ممتلئ (512 عنصر تحكم). أزل عنصر تحكم قبل إضافة قائمة تشغيل.",
+      "s.cd.plexChoose": "اختر قائمة تشغيل Plex…",
+      "s.cd.plexNone": "لم يتم العثور على قوائم تشغيل Plex. احفظ عنوان الخادم والرمز أولاً.",
+      "s.cd.plexChecking": "جارٍ الفحص…",
+      "s.cd.plexLoading": "جارٍ التحميل…"
     },
     "catalog": {
       "and": "و",
@@ -1687,7 +1712,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Ask before starting (tap a game twice)": "السؤال قبل التشغيل (النقر على اللعبة مرتين)",
       "🕙 Evenings → calm page": "مساءً → صفحة هادئة",
       "Plex queue": "قائمة انتظار Plex",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "ما يُشغَّل الآن وما يليه على مشغّل Plex مثل Caldera Amp؛ المس مقطعًا لتشغيله."
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "ما يُشغَّل الآن وما يليه على مشغّل Plex مثل Caldera Amp؛ المس مقطعًا لتشغيله.",
+      "Page buttons": "أزرار الصفحات",
+      "Buttons that open your pages; the page you are on is highlighted.": "أزرار تفتح صفحاتك؛ الصفحة الحالية مميّزة.",
+      "Pages (none ticked = all)": "الصفحات (عدم تحديد أي منها = الكل)",
+      "Plex playlists": "قوائم تشغيل Plex",
+      "Start configured Plex playlists on a Plex player.": "يبدأ قوائم تشغيل Plex المضبوطة على مشغّل Plex.",
+      "Plex playlists (none ticked = all)": "قوائم تشغيل Plex (دون تحديد = الكل)"
     },
     "panel": {
       "% load": "النسبة المئوية للحمولة",
@@ -1983,7 +2014,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "القمر",
       "{n}% lit": "مضاء بنسبة {n}%",
       "Core {n} MHz": "النواة {n} ميغاهرتز",
-      "Battery care": "العناية بالبطارية"
+      "Battery care": "العناية بالبطارية",
+      "Add a Plex playlists widget to an enabled page": "أضف أداة قوائم تشغيل Plex إلى صفحة مفعّلة"
     }
   }
 });

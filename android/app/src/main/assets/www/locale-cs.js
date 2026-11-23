@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "Tato aplikace už není v seznamu",
       "w.discord.shareNotDirect": "Discord tuto aplikaci nemůže sdílet přímo: použijte Vybrat na PC",
       "w.discord.shareRefused": "Tento Discord nedovoluje PhoneBoxu sledovat sdílení obrazovky",
+      "w.discord.chat": "Chat",
+      "w.discord.closeChat": "Zpět na kanály",
+      "w.discord.chatOff": "Zapněte chat v Nastavení › Obecné › Discord",
+      "w.discord.chatApprove": "Schvalte PhoneBox v Discordu, abyste viděli chat",
+      "w.discord.pickChannel": "Vyberte kanál",
+      "w.discord.voiceChat": "Chat hlasového kanálu",
+      "w.discord.openInDiscord": "Otevřít v Discordu",
+      "w.discord.noMessages": "Zatím žádné zprávy",
       "w.discord.turnOn": "Zapněte Discord v Nastavení › Obecné",
       "w.discord.failed": "Discord to neudělal",
       "w.discord.otherServer": "Ostatní",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "Pro akce /api/discord agenta: ztlumení, vypnutí zvuku, režim vstupu, odchod a připojení. Vypnuto: fungují, jen když je na zapnuté stránce widget Discord se zapnutým ovládáním. Zapnuto: fungují i bez něj. V obou případech je může použít vše, co může volat agenta, nejen widget: spárovaný telefon (USB nebo Wi-Fi) a programy na tomto počítači.",
       "s.discord.screenShare": "Spouštět a zastavovat sdílení obrazovky v Discordu z telefonu",
       "s.discord.screenShareHint": "Žádá Discord o oprávnění spouštět sdílení obrazovky, takže vás Discord požádá o další schválení PhoneBoxu. Dokud je na telefonu otevřené zobrazení sdílení, PhoneBox vypisuje aplikace s oknem na tomto počítači (jen názvy). Co lze sdílet přímo, rozhoduje Discord; pro ostatní použijte jeho výběr na počítači. Potřebuje také widget Discord se zapnutým ovládáním.",
+      "s.discord.chat": "Zobrazovat chat Discordu a tečky nových zpráv na telefonu (jen čtení)",
+      "s.discord.chatHint": "Posílá do telefonu text kanálů, které otevřete ve widgetu. Žádá Discord o oprávnění číst zprávy, takže vás Discord požádá o další schválení PhoneBoxu. Text zůstává jen v paměti (nikdy v souboru ani v protokolu) a zmizí, když se Discord odpojí nebo když tohle vypnete. Když odmítnete, vypnutý zůstane jen chat.",
       "w.steam.turnOn": "Připojení Steam v Nastavení › Obecné",
       "w.steam.stale": "Steam obnovení selhalo; zobrazují se starší data",
       "w.steam.onlineCount": "{online} online · {total} přátelé",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "Webhooky",
       "s.nav.general": "Obecné",
       "s.nav.advanced": "Pokročilé",
-      "s.pages.lead": "Každá stránka je mřížkou widgetů o rozměrech 12 × 6. Vyberte si stránku vlevo, uspořádejte její widgety na telefonu níže a nastavte jejich možnosti. Přetáhněte stránky pro změnu jejich pořadí; první z nich je domovská stránka, na kterou se panel vrátí, když je nečinný. Na telefonu přejeďte prstem, použijte klávesy hlasitosti nebo klepněte na tečky (nebo dlouhým stisknutím stránky) pro přehled všech stránek.",
+      "s.pages.lead": "Každá stránka je mřížkou widgetů o rozměrech 12 × 6. Vyberte si stránku vlevo, uspořádejte její widgety na telefonu níže a nastavte jejich možnosti. Přetáhněte stránky pro změnu jejich pořadí; první z nich je domovská stránka, na kterou se panel vrátí, když je nečinný. Na telefonu přejeďte prstem, použijte klávesy hlasitosti nebo klepněte na tečku a přejděte na její stránku (nebo přejeďte prstem po tečkách a jednu vyberte); klepnutím na aktuální tečku nebo na tlačítko mřížky vedle teček, případně dlouhým stisknutím prázdného místa stránky, zobrazíte přehled všech stránek.",
       "s.pages.layout": "Layout",
       "s.pages.livePreview": "Živý náhled",
       "s.shortcuts.lead": "Klávesy zobrazené v mřížce Zkratky a widgetech Velké tlačítko. Kliknutím na klávesu ji upravíte, přetažením změníte její pořadí. Telefon odešle pouze ID klávesy; příkazy nikdy neopustí tento počítač.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "Minuty před zobrazením noční obrazovky",
       "s.display.proximityWake": "Ruka u telefonu probudí noční obrazovku",
       "s.display.controlsTop": "Tečky stránky a tlačítka Povolit / Zakázat v horní části obrazovky",
+      "s.display.pageBar": "Přecházení mezi stránkami",
+      "s.display.pageBar.dots": "Tečky",
+      "s.display.pageBar.auto": "Lišta stránek po dotyku teček",
+      "s.display.pageBar.bar": "Lišta stránek, vždy zobrazená",
+      "s.display.pageBarSide": "Umístění lišty stránek",
+      "s.display.pageBarSide.bottom": "Dole",
+      "s.display.pageBarSide.left": "Vlevo",
+      "s.display.pageBarSide.right": "Vpravo",
+      "s.display.pageBarHint": "Lišta stránek ukazuje ikonu a název každé stránky; klepnutím na stránku na ni přejdete. Když je zobrazená stále, zabírá pruh obrazovky a stránky se trochu zmenší.",
       "s.oled.title": "Ochrana proti spálení OLED",
       "s.oled.pixelShift": "Posuňte panel o několik pixelů každé 2 minuty a noční hodiny kolem obrazovky",
       "s.oled.idleDim": "Ztlumení panelu po (minutách bez dotyku, 0 = nikdy)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Adresa přehrávače Plex",
       "s.cd.plexCheck": "Zkontrolovat připojení k Plexu",
       "s.cd.plexHint": "Ovládání Plexu vyžaduje na tomto počítači přehrávač Plex Companion, například Caldera Amp. Spusťte Caldera Amp jednou a přihlaste se; běží dál na pozadí a nemá žádné okno, které by muselo zůstat otevřené. Plexamp na tomto počítači místo toho funguje s běžnými widgety médií. Vložte adresu svého serveru Plex a svůj X-Plex-Token.",
-      "s.cd.plexChecking": "Kontroluje se…"
+      "s.cd.plexPlaylistHint": "Cíl: ID playlistu Plex. Vyberte ho ze seznamu níže.",
+      "s.cd.plexLoadLists": "Načíst playlisty Plex",
+      "s.cd.plexFull": "Control Deck je plný (512 ovládacích prvků). Před přidáním playlistu některý prvek odeberte.",
+      "s.cd.plexChoose": "Vyberte playlist Plex…",
+      "s.cd.plexNone": "Nebyly nalezeny žádné playlisty Plex. Nejprve uložte adresu serveru a token.",
+      "s.cd.plexChecking": "Kontroluje se…",
+      "s.cd.plexLoading": "Načítá se…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "Jen tato kategorie (její kategorie v Nastavení; prázdné = všechny)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "Telefon smí spouštět hry (vypnuto: knihovna se jen zobrazuje)",
       "Ask before starting (tap a game twice)": "Před spuštěním se zeptat (klepnout na hru dvakrát)",
       "Plex queue": "Fronta Plex",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Co hraje a co bude následovat v přehrávači Plex, například Caldera Amp; klepnutím na skladbu ji přehrajete."
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Co hraje a co bude následovat v přehrávači Plex, například Caldera Amp; klepnutím na skladbu ji přehrajete.",
+      "Page buttons": "Tlačítka stránek",
+      "Buttons that open your pages; the page you are on is highlighted.": "Tlačítka, která otevírají vaše stránky; aktuální stránka je zvýrazněná.",
+      "Pages (none ticked = all)": "Stránky (nic nezaškrtnuto = všechny)",
+      "Plex playlists": "Playlisty Plex",
+      "Start configured Plex playlists on a Plex player.": "Spustí nakonfigurované playlisty Plex v přehrávači Plex.",
+      "Plex playlists (none ticked = all)": "Playlisty Plex (nic nezaškrtnuto = všechny)"
     },
     "panel": {
       "% load": "% zatížení",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "Měsíc",
       "{n}% lit": "Osvětleno {n} %",
       "Core {n} MHz": "Jádro {n} MHz",
-      "Battery care": "Péče o baterii"
+      "Battery care": "Péče o baterii",
+      "Add a Plex playlists widget to an enabled page": "Přidejte widget playlistů Plex na povolenou stránku"
     }
   }
 });

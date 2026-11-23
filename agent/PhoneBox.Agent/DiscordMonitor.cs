@@ -31,8 +31,11 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
     private static readonly string[] Scopes = ["rpc", "rpc.voice.read", "rpc.voice.write", "rpc.notifications.read"];
     /// <summary>Only asked for while screen share is on (<see cref="DiscordConfig.ScreenShare"/>), so nobody else has to approve PhoneBox again.</summary>
     internal static readonly string[] ShareScopes = ["rpc.screenshare.read", "rpc.screenshare.write"];
+    /// <summary>Only asked for while the chat setting is on (<see cref="DiscordConfig.Chat"/>), so nobody else has to approve PhoneBox again.</summary>
+    internal const string ChatScope = "messages.read";
     /// <summary>The permissions the settings want beyond the base ones (<see cref="Scopes"/>).</summary>
-    internal static string[] ExtraScopes(DiscordConfig cfg) => cfg.ScreenShare ? ShareScopes : [];
+    internal static string[] ExtraScopes(DiscordConfig cfg) =>
+        [.. cfg.ScreenShare ? ShareScopes : [], .. cfg.Chat ? new[] { ChatScope } : []];
     private const string Redirect = "http://127.0.0.1";
     private static readonly string[] SpeakingEvents = ["SPEAKING_START", "SPEAKING_STOP"];
 
@@ -224,6 +227,7 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
                     _notesWanted = wantNotes;
                 }
                 await FollowShare(ct);
+                if (!ChatOn) await StopChat(ct); // the chat went off: forget its messages and tell Discord to stop sending them
                 if (DateTime.UtcNow - channelsAt > channelsEvery)
                 {
                     channelsEvery = await RefreshVoiceChannels(ct) ? TimeSpan.FromSeconds(60) : TimeSpan.FromSeconds(10);
@@ -272,6 +276,7 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
             SpeakingChannel = null;
             _granted = [];
             ClearShare();
+            ClearChat(); // message text never outlives the connection
             stop.Cancel();
             try { await reader; } catch { }
             if (roomsTask is not null) try { await roomsTask; } catch { }
@@ -379,6 +384,7 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
     {
         var r = await Request("AUTHENTICATE", new JsonObject { ["access_token"] = tokens.Access }, null, ct);
         // Discord names the scopes of this login; the token answer's list is the fallback
+        _meId = JsonStr(r?["user"]?["id"]);
         _granted = r?["scopes"] is JsonArray scopes ? [.. scopes.Select(JsonStr).OfType<string>()] : tokens.Scope?.Split(' ') ?? [];
         // A permission taken back in Discord (also while its setting is off): the saved login must not claim it any longer,
         // or turning the setting on would not ask for it.
@@ -460,7 +466,7 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
         {
             "guild" => s.Channels.Any(c => c.GuildId == id && c.GuildIcon == hash),
             "user" => s.Members.Any(m => m.Id == id && m.Avatar == hash)
-                || s.Channels.Any(c => c.People?.Any(m => m.Id == id && m.Avatar == hash) == true),
+                || s.Channels.Any(c => c.People?.Any(m => m.Id == id && m.Avatar == hash) == true) || IsChatAuthor(id, hash),
             _ => false,
         };
     }
@@ -520,6 +526,10 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
                     _guildChannels[gid] = chans
                         .Where(c => c?["type"]?.GetValue<int>() is 2 or 13 && c["id"] is not null)
                         .Select(c => new DiscordChannel(c!["id"]!.GetValue<string>(), c["name"]?.GetValue<string>() ?? c["id"]!.GetValue<string>(), gname, gid, icon)).ToList();
+                    // the same answer lists the text channels: kept for the chat (names only, no messages)
+                    KeepTextChannels(gid, chans
+                        .Where(c => c?["type"]?.GetValue<int>() is 0 or 5 && c["id"] is not null)
+                        .Select(c => new DiscordChannel(c!["id"]!.GetValue<string>(), c["name"]?.GetValue<string>() ?? c["id"]!.GetValue<string>(), gname, gid, icon)));
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException) { complete = false; log.LogDebug("discord: channels of {Guild} failed: {Msg}", gname, ex.Message); }
             }
@@ -608,6 +618,11 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
                     OnShareState(obj["data"]);
                     continue;
                 }
+                if (evt == "MESSAGE_CREATE" && JsonStr(obj["cmd"]) == "DISPATCH")
+                {
+                    OnChatMessage(obj["data"]); // only kept while the chat is on
+                    continue;
+                }
                 if (evt == "NOTIFICATION_CREATE")
                 {
                     if (!NotesNow() || obj["data"] is not JsonObject d) continue;
@@ -626,6 +641,7 @@ public sealed partial class DiscordMonitor(ConfigStore config, ILogger<DiscordMo
         {
             _notesWanted = false;
             ClearShare();
+            ClearChat();
             lock (_lock)
             {
                 _closed = true; // a poll still finishing for this connection must not bring "connected" back

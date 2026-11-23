@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "यह ऐप अब सूची में नहीं है",
       "w.discord.shareNotDirect": "Discord इस ऐप को सीधे शेयर नहीं कर सकता: PC पर चुनें इस्तेमाल करें",
       "w.discord.shareRefused": "यह Discord PhoneBox को स्क्रीन शेयर की स्थिति देखने नहीं देता",
+      "w.discord.chat": "चैट",
+      "w.discord.closeChat": "चैनलों पर वापस",
+      "w.discord.chatOff": "सेटिंग › सामान्य › Discord में चैट चालू करें",
+      "w.discord.chatApprove": "चैट देखने के लिए Discord में PhoneBox को अनुमति दें",
+      "w.discord.pickChannel": "चैनल चुनें",
+      "w.discord.voiceChat": "वॉइस चैनल चैट",
+      "w.discord.openInDiscord": "Discord में खोलें",
+      "w.discord.noMessages": "अभी कोई संदेश नहीं",
       "w.discord.turnOn": "विन्यास › सामान्य में Discord को सक्रिय करें",
       "w.discord.failed": "Discord ने ऐसा नहीं किया",
       "w.discord.otherServer": "अन्य",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "एजेंट की /api/discord क्रियाओं के लिए: म्यूट, डेफ़न, इनपुट मोड, छोड़ना और जुड़ना। बंद: ये तभी काम करती हैं जब किसी चालू पेज पर नियंत्रण चालू वाला Discord विजेट हो। चालू: ये विजेट के बिना भी काम करती हैं। दोनों स्थितियों में, केवल विजेट ही नहीं, एजेंट को कॉल कर सकने वाली हर चीज़ इन्हें इस्तेमाल कर सकती है: जोड़ा गया फ़ोन (USB या Wi-Fi) और इस कंप्यूटर के प्रोग्राम।",
       "s.discord.screenShare": "फ़ोन से Discord स्क्रीन शेयर शुरू और बंद करें",
       "s.discord.screenShareHint": "Discord से स्क्रीन शेयर शुरू करने की अनुमति माँगता है, इसलिए Discord आपसे PhoneBox को एक बार फिर स्वीकृत करने को कहेगा। फ़ोन पर शेयर व्यू खुला रहने तक PhoneBox इस कंप्यूटर पर विंडो वाले ऐप दिखाता है (केवल नाम)। Discord तय करता है कि वह सीधे क्या शेयर कर सकता है; बाकी के लिए कंप्यूटर पर उसका चयनकर्ता इस्तेमाल करें। नियंत्रण चालू वाला Discord विजेट भी चाहिए।",
+      "s.discord.chat": "फ़ोन पर Discord चैट और नए संदेश के बिंदु दिखाएँ (केवल पढ़ने के लिए)",
+      "s.discord.chatHint": "विजेट में खोले गए चैनलों का पाठ फ़ोन पर भेजता है। Discord से संदेश पढ़ने की अनुमति माँगता है, इसलिए Discord आपसे PhoneBox को एक बार फिर स्वीकृत करने को कहेगा। पाठ केवल मेमोरी में रहता है (कभी फ़ाइल या लॉग में नहीं) और Discord के डिस्कनेक्ट होने या इसे बंद करने पर चला जाता है। मना करने पर केवल चैट बंद रहती है।",
       "w.steam.turnOn": "विन्यास › सामान्य में Steam को जोड़ें",
       "w.steam.stale": "Steam ताज़ा करना असफल; पुराने डाटा दिखा रहा है",
       "w.steam.onlineCount": "{online} ऑनलाइन {total} दोस्त",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "वेबहूक्स",
       "s.nav.general": "सामान्य",
       "s.nav.advanced": "उन्नत",
-      "s.pages.lead": "प्रत्येक पृष्ठ विजेट्स की 12 x6ग्रिड है. बाईं ओर एक पृष्ठ चुनें, नीचे फोन पर इसके विजेट्स को व्यवस्थित करें और उनके विकल्प सेट करें. उन्हें पुनः क्रमबद्ध करने के लिए पृष्ठों को खींचने दें; पहला घर का पृष्ठ है जब पैनल निष्क्रिय हो तो वापस आता है. फोन पर, सभी पृष्ठों की एक झलक पाने के लिये स्विच करें, आवाज़ कुंजी का प्रयोग करें या बिंदुओं को दबाएँ (या लंबे समय तक किसी पृष्ठ को दबाएं).",
+      "s.pages.lead": "प्रत्येक पृष्ठ विजेट्स की 12 x6ग्रिड है. बाईं ओर एक पृष्ठ चुनें, नीचे फोन पर इसके विजेट्स को व्यवस्थित करें और उनके विकल्प सेट करें. उन्हें पुनः क्रमबद्ध करने के लिए पृष्ठों को खींचने दें; पहला घर का पृष्ठ है जब पैनल निष्क्रिय हो तो वापस आता है. फ़ोन पर स्वाइप करें, वॉल्यूम कुंजियों का उपयोग करें, या किसी बिंदु पर टैप करके उसके पृष्ठ पर जाएँ (या बिंदुओं पर उँगली सरकाकर कोई पृष्ठ चुनें); सभी पृष्ठों की झलक के लिए मौजूदा बिंदु या बिंदुओं के पास वाले ग्रिड बटन पर टैप करें, या किसी पृष्ठ की खाली जगह को देर तक दबाएँ.",
       "s.pages.layout": "खाका",
       "s.pages.livePreview": "लाइव पूर्वावलोकन",
       "s.shortcuts.lead": "शॉर्टकट ग्रिड और बड़े बटन विजेट द्वारा दिखाई गई कुंजियाँ. संपादन के लिए कुंजी पर क्लिक करें, पुनः क्रमबद्ध करने के लिए खींचें. फोन केवल कुंजी का id भेजता है; कमांड इस कम्प्यूटर को कभी नहीं छोड़ते हैं.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "रात्रि स्क्रीन आने से पहले मिनट",
       "s.display.proximityWake": "फोन के पास एक हाथ रात स्क्रीन को जागता है",
       "s.display.controlsTop": "पृष्ठ बिंदु तथा स्क्रीन के ऊपर पर स्वीकारें/ अस्वीकार करें बटन",
+      "s.display.pageBar": "पृष्ठ नेविगेशन",
+      "s.display.pageBar.dots": "बिंदु",
+      "s.display.pageBar.auto": "बिंदुओं को छूने पर पृष्ठ बार",
+      "s.display.pageBar.bar": "पृष्ठ बार, हमेशा दिखे",
+      "s.display.pageBarSide": "पृष्ठ बार की जगह",
+      "s.display.pageBarSide.bottom": "नीचे",
+      "s.display.pageBarSide.left": "बाएँ",
+      "s.display.pageBarSide.right": "दाएँ",
+      "s.display.pageBarHint": "पृष्ठ बार हर पृष्ठ का आइकन और नाम दिखाता है; वहाँ जाने के लिए किसी पर टैप करें. हमेशा दिखने पर यह स्क्रीन की एक पट्टी लेता है और पृष्ठ थोड़े छोटे हो जाते हैं.",
       "s.oled.title": "ओएलईडी बर्न- इन सुरक्षा",
       "s.oled.pixelShift": "प्रत्येक2मिनट में कुछ पिक्सेल के द्वारा फलक को खिसकाएँ, तथा स्क्रीन के चारों ओर रात की घड़ी",
       "s.oled.idleDim": "बाद में पैनल को कम करें (मिनट बिना किसी टच के,0= कभी नहीं)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Plex प्लेयर का पता",
       "s.cd.plexCheck": "Plex कनेक्शन जाँचें",
       "s.cd.plexHint": "Plex नियंत्रण के लिए इस कंप्यूटर पर Caldera Amp जैसा Plex Companion प्लेयर चाहिए। Caldera Amp को एक बार शुरू करके साइन इन करें; यह पृष्ठभूमि में चलता रहता है और इसकी कोई विंडो खुली रखने की ज़रूरत नहीं है। इस कंप्यूटर पर Plexamp सामान्य मीडिया विजेट के साथ काम करता है। अपने Plex सर्वर का पता और X-Plex-Token चिपकाएँ।",
-      "s.cd.plexChecking": "जाँच हो रही है…"
+      "s.cd.plexPlaylistHint": "लक्ष्य: Plex प्लेलिस्ट ID। नीचे दी गई सूची से चुनें।",
+      "s.cd.plexLoadLists": "Plex प्लेलिस्ट लोड करें",
+      "s.cd.plexFull": "Control Deck भर गया है (512 कंट्रोल)। प्लेलिस्ट जोड़ने से पहले कोई कंट्रोल हटाएँ।",
+      "s.cd.plexChoose": "Plex प्लेलिस्ट चुनें…",
+      "s.cd.plexNone": "कोई Plex प्लेलिस्ट नहीं मिली। पहले सर्वर का पता और टोकन सहेजें।",
+      "s.cd.plexChecking": "जाँच हो रही है…",
+      "s.cd.plexLoading": "लोड हो रहा है…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "केवल यह श्रेणी (सेटिंग्स में इसकी श्रेणी; खाली = सभी)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "फ़ोन को गेम शुरू करने दें (बंद: लाइब्रेरी सिर्फ़ दिखाई जाती है)",
       "Ask before starting (tap a game twice)": "शुरू करने से पहले पूछें (गेम पर दो बार टैप करें)",
       "Plex queue": "Plex कतार",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp जैसे Plex प्लेयर पर क्या चल रहा है और आगे क्या आएगा; गाना चलाने के लिए उस पर टैप करें।"
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp जैसे Plex प्लेयर पर क्या चल रहा है और आगे क्या आएगा; गाना चलाने के लिए उस पर टैप करें।",
+      "Page buttons": "पृष्ठ बटन",
+      "Buttons that open your pages; the page you are on is highlighted.": "बटन जो आपके पृष्ठ खोलते हैं; जिस पृष्ठ पर आप हैं वह हाइलाइट रहता है.",
+      "Pages (none ticked = all)": "पृष्ठ (कोई न चुना हो = सभी)",
+      "Plex playlists": "Plex प्लेलिस्ट",
+      "Start configured Plex playlists on a Plex player.": "Plex प्लेयर पर कॉन्फ़िगर की गई Plex प्लेलिस्ट शुरू करें।",
+      "Plex playlists (none ticked = all)": "Plex प्लेलिस्ट (कोई चयनित नहीं = सभी)"
     },
     "panel": {
       "% load": "लोड%",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "चंद्रमा",
       "{n}% lit": "{n}% प्रकाशित",
       "Core {n} MHz": "कोर {n} MHz",
-      "Battery care": "बैटरी देखभाल"
+      "Battery care": "बैटरी देखभाल",
+      "Add a Plex playlists widget to an enabled page": "किसी सक्षम पेज पर Plex प्लेलिस्ट विजेट जोड़ें"
     }
   }
 });

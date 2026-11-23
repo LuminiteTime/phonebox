@@ -33,7 +33,8 @@ export async function deckCommand(kind, values = {}) {
   }
   return result;
 }
-const fail = error => toast(error?.message || tp('The computer did not answer'), 'err');
+// the Plex page-gate messages are translated on every path, also when a deck control (a playlist) is refused
+const fail = error => toast(plexText(error?.message) || tp('The computer did not answer'), 'err');
 const button = (label, click, name = label) => {
   const b = h('button', 'deck-button', label); b.type = 'button'; b.setAttribute('aria-label', name);
   b.onclick = async () => { haptic(); b.disabled = true; try { await click(); } catch (e) { fail(e); } finally { b.disabled = false; } };
@@ -220,7 +221,7 @@ const groups = {
   'display-profiles': ['display-profile'], 'focus-profile': ['focus', 'macro'],
   'meeting-controls': ['meeting'], 'discord-controls': ['discord'], 'meeting-profile': ['meeting', 'macro'],
   'task-runner': ['task'], 'dev-servers': ['server'], services: ['service'], 'workflow-runner': ['workflow'], 'script-pad': ['task', 'shortcut'],
-  soundboard: ['sound'], radio: ['radio'], playlists: ['playlist'], 'audio-routing': ['audio-route'],
+  soundboard: ['sound'], radio: ['radio'], playlists: ['playlist'], 'plex-playlists': ['plex-playlist'], 'audio-routing': ['audio-route'],
   'external-mixer': ['mixer', 'mixer-mute'], 'midi-pad': ['midi'], 'osc-pad': ['osc'],
 };
 function actionsView(box, options, type) {
@@ -726,8 +727,8 @@ integrationWidget('media-queue', 'Spotify queue', 'spotify/state', (root,data,se
     root.append(b);
   }
 });
-// Agent error text for the Plex widgets: the page-gate message is translated; any other text is shown as the agent sent it.
-const plexText = text => text === 'Add a Plex widget to an enabled page' ? tp('Add a Plex widget to an enabled page') : text;
+// Agent error text for the Plex widgets: the two page-gate messages are translated; any other text is shown as the agent sent it.
+const plexText = text => text === 'Add a Plex widget to an enabled page' ? tp('Add a Plex widget to an enabled page') : text === 'Add a Plex playlists widget to an enabled page' ? tp('Add a Plex playlists widget to an enabled page') : text;
 // Plex music (Caldera Amp): the same queue as above without covers. The agent passes on only an id, a name and an artist.
 integrationWidget('plex-queue', 'Plex queue', 'plex/state', (root,data,send)=>{
   const text = (name, artist) => h('div','sq-txt', h('div','sq-name',name || ''), artist ? h('div','sq-artist',artist) : null);

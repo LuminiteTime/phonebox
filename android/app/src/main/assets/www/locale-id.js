@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "Aplikasi ini tidak ada lagi di daftar",
       "w.discord.shareNotDirect": "Discord tidak bisa membagikan aplikasi ini secara langsung: gunakan Pilih di PC",
       "w.discord.shareRefused": "Discord ini tidak mengizinkan PhoneBox mengikuti berbagi layar",
+      "w.discord.chat": "Obrolan",
+      "w.discord.closeChat": "Kembali ke saluran",
+      "w.discord.chatOff": "Nyalakan obrolan di Pengaturan › Umum › Discord",
+      "w.discord.chatApprove": "Setujui PhoneBox di Discord untuk melihat obrolan",
+      "w.discord.pickChannel": "Pilih saluran",
+      "w.discord.voiceChat": "Obrolan saluran suara",
+      "w.discord.openInDiscord": "Buka di Discord",
+      "w.discord.noMessages": "Belum ada pesan",
       "w.discord.turnOn": "Aktifkan Discord di Pengaturan › Umum",
       "w.discord.failed": "Discord tidak melakukannya",
       "w.discord.otherServer": "Lain",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "Untuk aksi /api/discord milik agen: bisukan, tulikan, mode masukan, keluar, dan bergabung. Mati: hanya berfungsi selama ada widget Discord dengan kontrol aktif di halaman yang diaktifkan. Nyala: berfungsi tanpa widget. Dalam kedua keadaan, apa pun yang bisa memanggil agen dapat memakainya, bukan hanya widget: ponsel yang dipasangkan (USB atau Wi-Fi) dan program di komputer ini.",
       "s.discord.screenShare": "Mulai dan hentikan berbagi layar Discord dari ponsel",
       "s.discord.screenShareHint": "Meminta izin Discord untuk memulai berbagi layar, jadi Discord meminta Anda menyetujui PhoneBox sekali lagi. Selama tampilan berbagi terbuka di ponsel, PhoneBox menampilkan aplikasi yang punya jendela di komputer ini (hanya nama). Discord yang menentukan apa yang bisa dibagikan langsung; untuk yang lain gunakan pemilihnya di komputer. Juga memerlukan widget Discord dengan kontrol aktif.",
+      "s.discord.chat": "Tampilkan obrolan Discord dan titik pesan baru di ponsel (hanya baca)",
+      "s.discord.chatHint": "Mengirim teks saluran yang Anda buka di widget ke ponsel. Meminta izin Discord untuk membaca pesan, jadi Discord meminta Anda menyetujui PhoneBox sekali lagi. Teks hanya ada di memori (tidak pernah di file atau log) dan hilang saat Discord terputus atau ini dimatikan. Jika Anda menolak, hanya obrolan yang tetap mati.",
       "w.steam.turnOn": "Sambungkan Steam di Pengaturan › Umum",
       "w.steam.stale": "Steam refresh gagal; menampilkan data lama",
       "w.steam.onlineCount": "{online} online · {total} teman",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "Webhooks",
       "s.nav.general": "Umum",
       "s.nav.advanced": "Lanjutan",
-      "s.pages.lead": "Setiap halaman adalah grid widget 12 x 6. Pilih sebuah halaman di sebelah kiri, atur widgetnya pada ponsel di bawah dan tetapkan pilihan mereka. Seret halaman untuk menyusun ulang; yang pertama adalah halaman rumah panel kembali ke saat tidak aktif. Di ponsel, selipkan, gunakan tombol volume, atau tekan titik (atau tekan panjang suatu halaman) untuk melihat keseluruhan semua halaman.",
+      "s.pages.lead": "Setiap halaman adalah grid widget 12 x 6. Pilih sebuah halaman di sebelah kiri, atur widgetnya pada ponsel di bawah dan tetapkan pilihan mereka. Seret halaman untuk menyusun ulang; yang pertama adalah halaman rumah panel kembali ke saat tidak aktif. Di ponsel, geser, gunakan tombol volume, atau ketuk sebuah titik untuk membuka halamannya (atau geser jari di sepanjang titik untuk memilih satu); ketuk titik saat ini atau tombol kisi di samping titik, atau tekan lama bagian kosong sebuah halaman, untuk melihat semua halaman.",
       "s.pages.layout": "Tata Letak",
       "s.pages.livePreview": "Pralihat langsung",
       "s.shortcuts.lead": "Kunci yang ditampilkan oleh grid Jalan Pintas dan widget tombol besar. Klik sebuah kunci untuk mengeditnya, seret untuk menyusun ulang. Ponsel hanya mengirim id kunci; perintah tidak pernah meninggalkan komputer ini.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "Menit sebelum layar malam muncul",
       "s.display.proximityWake": "Sebuah tangan di dekat telepon bangun layar malam",
       "s.display.controlsTop": "Titik-titik halaman dan tombol Izinkan / Tolak di bagian atas layar",
+      "s.display.pageBar": "Navigasi halaman",
+      "s.display.pageBar.dots": "Titik",
+      "s.display.pageBar.auto": "Bilah halaman saat titik disentuh",
+      "s.display.pageBar.bar": "Bilah halaman, selalu tampil",
+      "s.display.pageBarSide": "Posisi bilah halaman",
+      "s.display.pageBarSide.bottom": "Bawah",
+      "s.display.pageBarSide.left": "Kiri",
+      "s.display.pageBarSide.right": "Kanan",
+      "s.display.pageBarHint": "Bilah halaman menampilkan ikon dan nama setiap halaman; ketuk salah satunya untuk membukanya. Jika selalu tampil, bilah ini memakai satu jalur layar dan halaman menjadi sedikit lebih kecil.",
       "s.oled.title": "OLED perlindungan terbakar",
       "s.oled.pixelShift": "Pindah panel beberapa piksel setiap 2 menit, dan jam malam di sekitar layar",
       "s.oled.idleDim": "Menutup panel setelah (menit tanpa sentuh, 0 = tidak pernah)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Alamat pemutar Plex",
       "s.cd.plexCheck": "Periksa koneksi Plex",
       "s.cd.plexHint": "Kontrol Plex memerlukan pemutar Plex Companion seperti Caldera Amp di komputer ini. Jalankan Caldera Amp sekali lalu masuk; aplikasi ini terus berjalan di latar belakang dan tidak punya jendela yang harus dibiarkan terbuka. Plexamp di komputer ini bekerja dengan widget media biasa. Tempel alamat server Plex dan X-Plex-Token Anda.",
-      "s.cd.plexChecking": "Memeriksa…"
+      "s.cd.plexPlaylistHint": "Target: ID daftar putar Plex. Pilih dari daftar di bawah.",
+      "s.cd.plexLoadLists": "Muat daftar putar Plex",
+      "s.cd.plexFull": "Control Deck penuh (512 kontrol). Hapus satu kontrol sebelum menambahkan daftar putar.",
+      "s.cd.plexChoose": "Pilih daftar putar Plex…",
+      "s.cd.plexNone": "Daftar putar Plex tidak ditemukan. Simpan dulu alamat server dan token.",
+      "s.cd.plexChecking": "Memeriksa…",
+      "s.cd.plexLoading": "Memuat…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "Hanya kategori ini (kategorinya di Pengaturan; kosong = semua)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "Izinkan ponsel memulai game (mati: pustaka hanya ditampilkan)",
       "Ask before starting (tap a game twice)": "Tanya sebelum memulai (ketuk game dua kali)",
       "Plex queue": "Antrean Plex",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Apa yang sedang diputar dan berikutnya pada pemutar Plex seperti Caldera Amp; ketuk lagu untuk memutarnya."
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Apa yang sedang diputar dan berikutnya pada pemutar Plex seperti Caldera Amp; ketuk lagu untuk memutarnya.",
+      "Page buttons": "Tombol halaman",
+      "Buttons that open your pages; the page you are on is highlighted.": "Tombol yang membuka halaman Anda; halaman yang sedang dibuka disorot.",
+      "Pages (none ticked = all)": "Halaman (tidak ada yang dicentang = semua)",
+      "Plex playlists": "Daftar putar Plex",
+      "Start configured Plex playlists on a Plex player.": "Memulai daftar putar Plex yang dikonfigurasi pada pemutar Plex.",
+      "Plex playlists (none ticked = all)": "Daftar putar Plex (tidak ada yang dicentang = semua)"
     },
     "panel": {
       "% load": "% muatan",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "Bulan",
       "{n}% lit": "{n}% terang",
       "Core {n} MHz": "Inti {n} MHz",
-      "Battery care": "Perawatan baterai"
+      "Battery care": "Perawatan baterai",
+      "Add a Plex playlists widget to an enabled page": "Tambahkan widget daftar putar Plex ke halaman yang aktif"
     }
   }
 });

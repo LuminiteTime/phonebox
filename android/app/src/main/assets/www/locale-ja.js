@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "このアプリはもう一覧にありません",
       "w.discord.shareNotDirect": "Discord はこのアプリを直接共有できません。「PC で選ぶ」を使ってください",
       "w.discord.shareRefused": "この Discord では PhoneBox が画面共有の状態を確認できません",
+      "w.discord.chat": "チャット",
+      "w.discord.closeChat": "チャンネルに戻る",
+      "w.discord.chatOff": "設定 › 一般 › Discord でチャットをオンにしてください",
+      "w.discord.chatApprove": "チャットを表示するには Discord で PhoneBox を承認してください",
+      "w.discord.pickChannel": "チャンネルを選択",
+      "w.discord.voiceChat": "ボイスチャンネルのチャット",
+      "w.discord.openInDiscord": "Discord で開く",
+      "w.discord.noMessages": "まだメッセージはありません",
       "w.discord.turnOn": "設定 › 一般の Discord を有効にします",
       "w.discord.failed": "Discord やってないんだ",
       "w.discord.otherServer": "その他",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "エージェントの /api/discord 操作（ミュート、スピーカーミュート、入力モード、退出、参加）に適用されます。オフ: 有効なページに、操作を許可した Discord ウィジェットがある間だけ使えます。オン: ウィジェットがなくても使えます。どちらの場合も、ウィジェットだけでなくエージェントを呼び出せるものはすべて使えます: ペアリングしたスマホ（USB または Wi-Fi）とこのコンピューターのプログラム。",
       "s.discord.screenShare": "スマホから Discord の画面共有を開始・停止",
       "s.discord.screenShareHint": "Discord に画面共有を開始する権限を求めるため、Discord で PhoneBox をもう一度承認するよう求められます。スマホで共有画面を開いている間、PhoneBox はこのコンピューターでウィンドウのあるアプリを一覧にします（名前のみ）。直接共有できるかは Discord が決めます。それ以外はコンピューターで Discord の選択画面を使ってください。操作をオンにした Discord ウィジェットも必要です。",
+      "s.discord.chat": "Discord のチャットと新着メッセージの印をスマホに表示（読み取り専用）",
+      "s.discord.chatHint": "ウィジェットで開いたチャンネルのテキストをスマホに送ります。Discord にメッセージを読む権限を求めるため、Discord で PhoneBox をもう一度承認するよう求められます。テキストはメモリにだけ保持され（ファイルやログには書きません）、Discord が切断されるかこの設定をオフにすると消えます。拒否した場合は、チャットだけがオフのままになります。",
       "w.steam.turnOn": "設定 › 一般の中で Steam を接続",
       "w.steam.stale": "Steam の更新に失敗しました。古いデータを表示しています",
       "w.steam.onlineCount": "{online} オンラインで {total} 友達だ",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "ウェブフック",
       "s.nav.general": "一般",
       "s.nav.advanced": "進化",
-      "s.pages.lead": "各ページはウィジェットの12×6グリッドです。左側にあるページを選択し、下の携帯電話上でそのウィジェットを並べ替え、オプションを設定します。ドラッグしてページを再配列します。最初のページはパネルが無効になったときに戻るホームページです。携帯電話ではスワイプ、音量キーを使うか、点をタップ（またはページを長押し）して全てのページの概要を見ることができます。",
+      "s.pages.lead": "各ページはウィジェットの12×6グリッドです。左側にあるページを選択し、下の携帯電話上でそのウィジェットを並べ替え、オプションを設定します。ドラッグしてページを再配列します。最初のページはパネルが無効になったときに戻るホームページです。携帯電話ではスワイプ、音量キーのほか、点をタップするとそのページに移動します（点の上で指をスライドして選ぶこともできます）。現在の点か点の横のグリッドボタンをタップするか、ページの空いている所を長押しすると、全ページの一覧が表示されます。",
       "s.pages.layout": "レイアウト",
       "s.pages.livePreview": "ライブプレビュー",
       "s.shortcuts.lead": "ショートカットグリッドと大きなボタンウィジェットに表示されるキー。キーをクリックして編集し、ドラッグして順序を変更します。携帯電話はキーの id だけを送信します。コマンドはこのコンピュータを離れません。",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "夜間スクリーンが表示されるまでの分数",
       "s.display.proximityWake": "電話の近くで手を動かすと夜間スクリーンが起動します",
       "s.display.controlsTop": "スクリーンの上部にあるページドットと許可/拒否ボタン",
+      "s.display.pageBar": "ページの切り替え",
+      "s.display.pageBar.dots": "ドット",
+      "s.display.pageBar.auto": "ドットに触れたときにページバー",
+      "s.display.pageBar.bar": "ページバーを常に表示",
+      "s.display.pageBarSide": "ページバーの位置",
+      "s.display.pageBarSide.bottom": "下",
+      "s.display.pageBarSide.left": "左",
+      "s.display.pageBarSide.right": "右",
+      "s.display.pageBarHint": "ページバーには各ページのアイコンと名前が表示され、タップするとそのページに移動します。常に表示すると画面の一部を使うため、ページが少し小さくなります。",
       "s.oled.title": "OLEDバーンイン保護",
       "s.oled.pixelShift": "パネルを2分ごとに数ピクセル移動し、スクリーンの周りの夜間時計を動かします",
       "s.oled.idleDim": "パネルを暗くする時間 (タッチなしで分、0 = 決して)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Plex プレーヤーのアドレス",
       "s.cd.plexCheck": "Plex の接続を確認",
       "s.cd.plexHint": "Plex コントロールには、このコンピューター上の Caldera Amp などの Plex Companion プレーヤーが必要です。Caldera Amp を一度起動してサインインしてください。バックグラウンドで動作し続けるため、開いたままにするウィンドウはありません。このコンピューター上の Plexamp は、通常のメディアウィジェットで操作できます。Plex サーバーのアドレスと X-Plex-Token を貼り付けてください。",
-      "s.cd.plexChecking": "確認中…"
+      "s.cd.plexPlaylistHint": "ターゲット: Plex プレイリスト ID。下のリストから選択してください。",
+      "s.cd.plexLoadLists": "Plex プレイリストを読み込む",
+      "s.cd.plexFull": "Control Deck がいっぱいです（コントロール 512 個）。プレイリストを追加する前にコントロールを 1 つ削除してください。",
+      "s.cd.plexChoose": "Plex プレイリストを選択…",
+      "s.cd.plexNone": "Plex プレイリストが見つかりません。先にサーバーのアドレスとトークンを保存してください。",
+      "s.cd.plexChecking": "確認中…",
+      "s.cd.plexLoading": "読み込み中…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "このカテゴリのみ（設定でのカテゴリ。空欄 = すべて）",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "スマホからゲームを起動できるようにする（オフ：ライブラリの表示のみ）",
       "Ask before starting (tap a game twice)": "起動前に確認する（ゲームを 2 回タップ）",
       "Plex queue": "Plex キュー",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp などの Plex プレーヤーで再生中の曲と次の曲を表示します。曲をタップすると再生します。"
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp などの Plex プレーヤーで再生中の曲と次の曲を表示します。曲をタップすると再生します。",
+      "Page buttons": "ページボタン",
+      "Buttons that open your pages; the page you are on is highlighted.": "ページを開くボタン。表示中のページは強調されます。",
+      "Pages (none ticked = all)": "ページ（未選択 = すべて）",
+      "Plex playlists": "Plex プレイリスト",
+      "Start configured Plex playlists on a Plex player.": "設定済みの Plex プレイリストを Plex プレーヤーで再生します。",
+      "Plex playlists (none ticked = all)": "Plex プレイリスト（未選択 = すべて）"
     },
     "panel": {
       "% load": "負荷の %",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "月",
       "{n}% lit": "輝面 {n}%",
       "Core {n} MHz": "コア {n} MHz",
-      "Battery care": "バッテリーケア"
+      "Battery care": "バッテリーケア",
+      "Add a Plex playlists widget to an enabled page": "有効なページに Plex プレイリストウィジェットを追加してください"
     }
   }
 });

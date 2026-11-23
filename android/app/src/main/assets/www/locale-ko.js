@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "이 앱은 더 이상 목록에 없습니다",
       "w.discord.shareNotDirect": "Discord가 이 앱을 바로 공유할 수 없습니다. 'PC에서 선택'을 사용하세요",
       "w.discord.shareRefused": "이 Discord에서는 PhoneBox가 화면 공유 상태를 확인할 수 없습니다",
+      "w.discord.chat": "채팅",
+      "w.discord.closeChat": "채널로 돌아가기",
+      "w.discord.chatOff": "설정 › 일반 › Discord에서 채팅을 켜세요",
+      "w.discord.chatApprove": "채팅을 보려면 Discord에서 PhoneBox를 승인하세요",
+      "w.discord.pickChannel": "채널 선택",
+      "w.discord.voiceChat": "음성 채널 채팅",
+      "w.discord.openInDiscord": "Discord에서 열기",
+      "w.discord.noMessages": "아직 메시지가 없습니다",
       "w.discord.turnOn": "켜기 Discord in 설정 › 일반",
       "w.discord.failed": "Discord 하지 않았습니다",
       "w.discord.otherServer": "기타",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "에이전트의 /api/discord 동작(마이크 끄기, 헤드셋 끄기, 입력 모드, 나가기, 참가)에 적용됩니다. 끔: 사용 설정된 페이지에 제어가 켜진 Discord 위젯이 있을 때만 작동합니다. 켬: 위젯 없이도 작동합니다. 어느 경우든 위젯뿐 아니라 에이전트를 호출할 수 있는 모든 것이 사용할 수 있습니다: 페어링된 휴대폰(USB 또는 Wi-Fi)과 이 컴퓨터의 프로그램.",
       "s.discord.screenShare": "휴대폰에서 Discord 화면 공유 시작 및 중지",
       "s.discord.screenShareHint": "Discord에 화면 공유를 시작할 권한을 요청하므로 Discord에서 PhoneBox를 한 번 더 승인해야 합니다. 휴대폰에서 공유 화면이 열려 있는 동안 PhoneBox는 이 컴퓨터에서 창이 있는 앱을 나열합니다(이름만). 바로 공유할 수 있는지는 Discord가 정합니다. 그 밖에는 컴퓨터에서 Discord의 선택 창을 사용하세요. 제어를 켠 Discord 위젯도 필요합니다.",
+      "s.discord.chat": "휴대폰에 Discord 채팅과 새 메시지 점 표시 (읽기 전용)",
+      "s.discord.chatHint": "위젯에서 연 채널의 텍스트를 휴대폰으로 보냅니다. Discord에 메시지 읽기 권한을 요청하므로 Discord에서 PhoneBox를 한 번 더 승인해야 합니다. 텍스트는 메모리에만 있고(파일이나 로그에는 절대 남지 않음) Discord 연결이 끊기거나 이 설정을 끄면 사라집니다. 거부하면 채팅만 꺼진 상태로 남습니다.",
       "w.steam.turnOn": "설정 › 일반에서 Steam 연결",
       "w.steam.stale": "Steam 새로 고침 실패; 이전 데이터 표시",
       "w.steam.onlineCount": "{online} 온라인 · {total} 친구",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "웹 후크",
       "s.nav.general": "일반",
       "s.nav.advanced": "고급",
-      "s.pages.lead": "각 페이지는 위젯의 12 × 6 그리드입니다. 왼쪽에있는 페이지를 선택하고, 아래의 전화에서 위젯을 배열하고 그들의 옵션을 설정합니다. 페이지 드래그하여 재배열하십시오; 첫 번째는 패널이 비활성 상태일 때 돌아가는 홈 페이지입니다. 전화에서 모든 페이지의 개요를 보려면 스와이프, 볼륨 키를 사용하거나 점을 누르거나 (또는 페이지에 길게 눌러).",
+      "s.pages.lead": "각 페이지는 위젯의 12 × 6 그리드입니다. 왼쪽에있는 페이지를 선택하고, 아래의 전화에서 위젯을 배열하고 그들의 옵션을 설정합니다. 페이지 드래그하여 재배열하십시오; 첫 번째는 패널이 비활성 상태일 때 돌아가는 홈 페이지입니다. 전화에서 스와이프하거나 볼륨 키를 쓰거나, 점을 탭하면 그 페이지로 이동합니다(점 위로 손가락을 밀어 고를 수도 있습니다). 현재 점이나 점 옆의 격자 버튼을 탭하거나 페이지의 빈 곳을 길게 누르면 모든 페이지의 개요가 표시됩니다.",
       "s.pages.layout": "레이아웃",
       "s.pages.livePreview": "실시간 미리 보기",
       "s.shortcuts.lead": "단축키 격자와 큰 버튼 위젯에 나타나는 키. 키를 클릭하면 편집할 수 있고, 드래그하면 재정렬할 수 있습니다. 전화기는 키 ID만 보내며, 명령은 이 컴퓨터에서 절대로 나가지 않습니다.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "야간 화면이 나타나기까지의 분",
       "s.display.proximityWake": "전화 근처에 손이 밤 스크린을 깨워",
       "s.display.controlsTop": "페이지 도트와 화면 상단의 허용 / 거부 단추",
+      "s.display.pageBar": "페이지 이동",
+      "s.display.pageBar.dots": "점",
+      "s.display.pageBar.auto": "점을 터치하면 페이지 막대",
+      "s.display.pageBar.bar": "페이지 막대 항상 표시",
+      "s.display.pageBarSide": "페이지 막대 위치",
+      "s.display.pageBarSide.bottom": "아래",
+      "s.display.pageBarSide.left": "왼쪽",
+      "s.display.pageBarSide.right": "오른쪽",
+      "s.display.pageBarHint": "페이지 막대는 각 페이지의 아이콘과 이름을 보여 줍니다. 탭하면 그 페이지로 이동합니다. 항상 표시하면 화면 일부를 차지해 페이지가 조금 작아집니다.",
       "s.oled.title": "OLED 버닝 보호",
       "s.oled.pixelShift": "2분마다 몇 개의 픽셀로 패널을 이동하고, 화면 주위에 밤 시계",
       "s.oled.idleDim": "패널 어둡게 하기(터치 없이 분, 0 = 사용 안 함)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Plex 플레이어 주소",
       "s.cd.plexCheck": "Plex 연결 확인",
       "s.cd.plexHint": "Plex 제어에는 이 컴퓨터에 Caldera Amp 같은 Plex Companion 플레이어가 필요합니다. Caldera Amp를 한 번 실행해 로그인하세요. 백그라운드에서 계속 실행되며 열어 둘 창이 없습니다. 이 컴퓨터의 Plexamp는 일반 미디어 위젯으로 제어할 수 있습니다. Plex 서버 주소와 X-Plex-Token을 붙여넣으세요.",
-      "s.cd.plexChecking": "확인 중…"
+      "s.cd.plexPlaylistHint": "대상: Plex 재생목록 ID. 아래 목록에서 선택하세요.",
+      "s.cd.plexLoadLists": "Plex 재생목록 불러오기",
+      "s.cd.plexFull": "Control Deck가 가득 찼습니다(컨트롤 512개). 재생목록을 추가하기 전에 컨트롤을 하나 삭제하세요.",
+      "s.cd.plexChoose": "Plex 재생목록 선택…",
+      "s.cd.plexNone": "Plex 재생목록을 찾을 수 없습니다. 먼저 서버 주소와 토큰을 저장하세요.",
+      "s.cd.plexChecking": "확인 중…",
+      "s.cd.plexLoading": "불러오는 중…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "이 분류만 (설정의 분류, 비우면 전체)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "휴대폰에서 게임 실행 허용(끄면 라이브러리만 표시)",
       "Ask before starting (tap a game twice)": "실행 전에 확인(게임을 두 번 탭)",
       "Plex queue": "Plex 대기열",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp 같은 Plex 플레이어에서 재생 중인 곡과 다음 곡을 표시합니다. 곡을 탭하면 재생합니다."
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Caldera Amp 같은 Plex 플레이어에서 재생 중인 곡과 다음 곡을 표시합니다. 곡을 탭하면 재생합니다.",
+      "Page buttons": "페이지 버튼",
+      "Buttons that open your pages; the page you are on is highlighted.": "페이지를 여는 버튼입니다. 현재 페이지가 강조 표시됩니다.",
+      "Pages (none ticked = all)": "페이지(선택 안 함 = 전체)",
+      "Plex playlists": "Plex 재생목록",
+      "Start configured Plex playlists on a Plex player.": "설정한 Plex 재생목록을 Plex 플레이어에서 시작합니다.",
+      "Plex playlists (none ticked = all)": "Plex 재생목록 (선택 안 함 = 전체)"
     },
     "panel": {
       "% load": "부하%",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "달",
       "{n}% lit": "{n}% 밝음",
       "Core {n} MHz": "코어 {n} MHz",
-      "Battery care": "배터리 관리"
+      "Battery care": "배터리 관리",
+      "Add a Plex playlists widget to an enabled page": "활성화된 페이지에 Plex 재생목록 위젯을 추가하세요"
     }
   }
 });

@@ -59,6 +59,7 @@
         action('web', 'Web dev server', 'server', 'npm run dev'), action('api', 'API dev server', 'server', 'dotnet watch'),
         action('meet-mic', 'Mute in meeting', 'meeting', 'Ctrl+D'), action('meet-cam', 'Camera', 'meeting', 'Ctrl+E'), action('meet-hand', 'Raise hand', 'meeting', 'Ctrl+Alt+H'),
         action('chime', 'Chime', 'sound', 'chime.wav', 75), action('applause', 'Applause', 'sound', 'applause.wav', 75),
+        action('plex-chill', 'Chill', 'plex-playlist', '12'), action('plex-focus', 'Focus', 'plex-playlist', '13'),
       ], profiles: [{ id: 'meeting', label: 'Meeting', levels: [], actions: [], output: null, input: null, defaults: {} },
         { id: 'music', label: 'Music', levels: [], actions: [], output: null, input: null, defaults: {} }],
         spotifyToken: null, spotifyDevice: null, mixerExecutable: null, mixerLibrary: null, spotifyClientId: null, spotifyRefreshToken: null,
@@ -115,6 +116,7 @@
   const shownWidgets = (c) => widgets({ ...c, pages: (c.pages || []).filter((p) => p.enabled !== false) });
   const dcControl = (c) => shownWidgets(c).some((w) => w.type === 'discord' && w.options?.control === true); // DiscordMonitor.WidgetControl
   const dcShare = (c) => c.discord?.screenShare === true && dcControl(c); // DiscordMonitor.ShareWanted
+  const dcChat = (c) => c.discord?.chat === true && shownWidgets(c).some((w) => w.type === 'discord'); // DiscordMonitor.ChatWanted
   const feedsCanOpen = (c) => shownWidgets(c).some((w) => w.type === 'feeds' && w.options?.open === true);
 
   // What the agent sends to a phone (AgentConfig.ToPublic): no commands, keys, tokens or what a rule matches on.
@@ -232,7 +234,7 @@
   let muteKeys = ['mute']; // ids of the shortcuts whose command is builtin:mute; their state is the computer's
 
   // made-up OBS: streaming for a while, buttons and scenes work
-  const dc = { muted: false, deaf: false, in: 'c1', sharing: null, noteAt: now() - 60000 }; // a fixed time, as the agent's notifications have
+  const dc = { muted: false, deaf: false, in: 'c1', sharing: null, chatIn: null, chatSeen: false, noteAt: now() - 60000 }; // a fixed time, as the agent's notifications have
   const obs = { streamingSince: now() - 754e3, recordingSince: 0, paused: false, scene: 'Desk', mic: false };
   function obsState() {
     return { enabled: true, control: true, snapshot: {
@@ -519,13 +521,14 @@
     }
     if (path === '/api/controls/plex/state') return json(deckPlex());
     if (path === '/api/controls/plex/check') return json(deckPlex());
+    if (path === '/api/controls/plex/playlists') return json([{ id: '12', name: 'Chill' }, { id: '13', name: 'Focus' }]);
     if (path.startsWith('/api/controls/plex/action/') && method === 'POST') {
       const action = path.split('/').pop();
       if (action === 'play-queued') {
         const i = TRACKS.findIndex((_, n) => plexId(n) === q.get('id'));
         if (i < 0 || i === player.track) return json({ ok: false, error: 'That queue item is no longer available' });
         Object.assign(player, { track: i, posMs: 0, at: now(), playing: true });
-      } else return json({ ok: false, error: 'Unknown Plex control' });
+      } else if (action !== 'playlist') return json({ ok: false, error: 'Unknown Plex control' });
       return json({ ok: true });
     }
     if (path === '/api/controls/spotify/state') return json(deckSpotify());
@@ -638,7 +641,7 @@
       // who is in Lounge: only when a widget that shows channels wants it, as the agent does (DiscordFavorites.WantedRooms)
       const lounge = shownWidgets(c).some((w) => w.type === 'discord' && w.options?.channels !== false
         && ((w.options?.favChannels || []).includes('c3') || ((w.options?.favGuilds || []).includes('g1') && !(w.options?.favChannels || []).includes('c1'))));
-      return json({ enabled: true, share: dcShare(c), control: c.discord?.allowControl === true || dcControl(c), snapshot: {
+      return json({ enabled: true, share: dcShare(c), chat: dcChat(c), chatUnread: dcChat(c) && !dc.chatSeen, control: c.discord?.allowControl === true || dcControl(c), widgetControl: dcControl(c), snapshot: {
         connected: true, error: null, user: 'demo', muted: dc.muted, deafened: dc.deaf, channelId: dc.in, channelName: dc.in ? 'Game night' : null, channelKind: dc.in ? 'voice' : null,
         inputMode: dc.ptt ? 'PUSH_TO_TALK' : 'VOICE_ACTIVITY', pttKey: true,
         members: dc.in ? [{ id: '1', name: 'demo', muted: dc.muted, deafened: dc.deaf }, { id: '2', name: 'Ada', muted: false, deafened: false, speaking: Math.floor(now() / 1500) % 2 === 0 }, { id: '3', name: 'Linus', muted: true, deafened: false }] : [],
@@ -709,6 +712,27 @@
       else if (a === 'app') return no('notDirect', 'Discord can\'t share this app directly: use "Choose on PC"');
       else return no('failed', 'unknown action');
       return json({ ok: true });
+    }
+    if (path === '/api/discord/chat') {
+      // read-only chat (off unless discord.chat is on): one server with two text channels, a few messages
+      if (!dcChat(await config())) return json({ enabled: false });
+      // the agent reads it as a bool: anything but true or false is refused, as ASP.NET does
+      if (q.has('picker') && !/^(true|false)$/i.test(q.get('picker'))) return json({}, 400);
+      const picker = /^true$/i.test(q.get('picker') || '');
+      if (!picker) dc.chatSeen = true;
+      const text = { t1: ['general', [['Ada', 'are you joining?'], ['Linus', 'in 5 min']]], t2: ['memes', [['Ada', 'look at this']]] };
+      const id = dc.chatIn ?? (dc.in ? 'c1' : null);
+      const msgs = id === null || picker ? [] : (text[id]?.[1] ?? [['Ada', 'hi from the call']]).map(([author, body], i) => ({ id: id + i, author, authorId: author, avatar: null, color: null, bot: false, text: body, ts: now() - (5 - i) * 60e3, attachments: 0, embed: null }));
+      return json({ enabled: true, ready: true, picker, voice: !dc.chatIn, callName: dc.in ? 'Game night' : null,
+        channel: id === null ? null : { id, name: text[id]?.[0] ?? 'Game night', guild: 'Friends', voice: !dc.chatIn }, messages: msgs,
+        servers: [{ id: 'g1', name: 'Friends', icon: null, unread: !dc.chatSeen }],
+        channels: picker && q.get('guild') === 'g1' ? [{ id: 't1', name: 'general', unread: !dc.chatSeen }, { id: 't2', name: 'memes', unread: false }] : null });
+    }
+    if (path === '/api/discord/chat/choose' && method === 'POST') { const ch = q.get('channel'); dc.chatIn = ch === 'voice' ? null : ch; return json({ ok: true }); }
+    if (path === '/api/discord/chat/open' && method === 'POST') {
+      const c = await config();
+      if (!dcControl(c)) return json({ error: "controlling Discord is turned off in the widget's settings" }, 400);
+      return dcChat(c) ? json({ ok: true }) : json({ error: 'the chat is turned off' }, 400);
     }
     if (path.startsWith('/api/discord/') && method === 'POST') {
       const dcCfg = await config();

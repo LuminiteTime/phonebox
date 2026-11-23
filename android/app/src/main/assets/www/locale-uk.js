@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "Цього застосунку більше немає в списку",
       "w.discord.shareNotDirect": "Discord не може показати цей застосунок напряму: використовуйте «Вибрати на ПК»",
       "w.discord.shareRefused": "Цей Discord не дозволяє PhoneBox стежити за демонстрацією екрана",
+      "w.discord.chat": "Чат",
+      "w.discord.closeChat": "Назад до каналів",
+      "w.discord.chatOff": "Увімкніть чат у Налаштування › Загальні › Discord",
+      "w.discord.chatApprove": "Підтвердьте PhoneBox у Discord, щоб бачити чат",
+      "w.discord.pickChannel": "Виберіть канал",
+      "w.discord.voiceChat": "Чат голосового каналу",
+      "w.discord.openInDiscord": "Відкрити в Discord",
+      "w.discord.noMessages": "Повідомлень ще немає",
       "w.discord.turnOn": "Ввімкнути Discord у Параметри › Загальні",
       "w.discord.failed": "Discord не зробив це",
       "w.discord.otherServer": "Інший",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "Для дій агента /api/discord: вимкнення мікрофона й звуку, режим введення, вихід і приєднання. Вимкнено: вони працюють, лише поки на ввімкненій сторінці є віджет Discord з увімкненим керуванням. Увімкнено: працюють і без нього. В обох випадках ними може користуватися все, що може звернутися до агента, а не лише віджет: спарений телефон (USB або Wi-Fi) і програми на цьому комп'ютері.",
       "s.discord.screenShare": "Запускати й зупиняти демонстрацію екрана Discord з телефона",
       "s.discord.screenShareHint": "Просить у Discord дозвіл запускати демонстрацію екрана, тож Discord попросить ще раз підтвердити PhoneBox. Поки на телефоні відкрито вигляд демонстрації, PhoneBox показує застосунки з вікнами на цьому комп'ютері (лише назви). Discord сам вирішує, що може показати напряму; для решти використовуйте його вибір на комп'ютері. Також потрібен віджет Discord з увімкненим керуванням.",
+      "s.discord.chat": "Показувати чат Discord і крапки нових повідомлень на телефоні (лише читання)",
+      "s.discord.chatHint": "Надсилає на телефон текст каналів, відкритих у віджеті. Просить у Discord дозвіл читати повідомлення, тож Discord попросить ще раз підтвердити PhoneBox. Текст зберігається лише в пам'яті (ніколи у файлі чи журналі) і зникає, коли Discord від'єднується або це вимкнено. Якщо відмовитися, вимкненим залишиться лише чат.",
       "w.steam.turnOn": "З’ єднати Steam у Параметри › Загальні",
       "w.steam.stale": "Спроба оновлення Steam зазнала невдачі; показуються старіші дані",
       "w.steam.onlineCount": "{online} онлайн · {total} друзі",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "Веб- гачки",
       "s.nav.general": "Загальні",
       "s.nav.advanced": "Додаткові",
-      "s.pages.lead": "Кожна сторінка є ґраткою віджетів розміром 12 x 6. Виберіть ліворуч сторінку, розташуйте її віджети на телефоні нижче і встановіть їх параметри. Перетягніть сторінки, щоб змінити порядок їх розташування; першою буде домашня сторінка, до якої повернеться панель після бездіяльності. На телефоні перетягніть, скористайтеся клавішами гучності або натисніть крапки (або довго натисніть на сторінці), щоб отримати огляд всіх сторінок.",
+      "s.pages.lead": "Кожна сторінка є ґраткою віджетів розміром 12 x 6. Виберіть ліворуч сторінку, розташуйте її віджети на телефоні нижче і встановіть їх параметри. Перетягніть сторінки, щоб змінити порядок їх розташування; першою буде домашня сторінка, до якої повернеться панель після бездіяльності. На телефоні гортайте, скористайтеся клавішами гучності або торкніться крапки, щоб перейти на її сторінку (або проведіть пальцем по крапках, щоб вибрати сторінку); торкніться поточної крапки чи кнопки-сітки поруч із крапками або довго натисніть на порожнє місце сторінки, щоб побачити огляд усіх сторінок.",
       "s.pages.layout": "Розкладка",
       "s.pages.livePreview": "Перегляд у реальному часі",
       "s.shortcuts.lead": "Клавіші, які показано у ґратці скорочень і віджетах великих кнопок. Клацніть на клавіатурі, щоб змінити її, перетягніть, щоб змінити порядок. Телефон надсилає лише ідентифікатор клавіші; команди ніколи не залишають комп’ ютера.",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "Хвилини до появи нічного екрана",
       "s.display.proximityWake": "Рука біля телефону розбудить нічний екран",
       "s.display.controlsTop": "Крапки сторінки і кнопки Дозволити/ Заборонити у верхній частині екрана",
+      "s.display.pageBar": "Перехід між сторінками",
+      "s.display.pageBar.dots": "Крапки",
+      "s.display.pageBar.auto": "Панель сторінок при дотику до крапок",
+      "s.display.pageBar.bar": "Панель сторінок, завжди видима",
+      "s.display.pageBarSide": "Розташування панелі сторінок",
+      "s.display.pageBarSide.bottom": "Знизу",
+      "s.display.pageBarSide.left": "Ліворуч",
+      "s.display.pageBarSide.right": "Праворуч",
+      "s.display.pageBarHint": "Панель сторінок показує значок і назву кожної сторінки; торкніться потрібної, щоб перейти. Коли вона видима завжди, вона займає смугу екрана, і сторінки стають трохи меншими.",
       "s.oled.title": "Захист від вигорання OLED",
       "s.oled.pixelShift": "Пересувати панелі на декілька пікселів кожні 2 хвилини, а також нічний годинник навколо екрана",
       "s.oled.idleDim": "Приглушувати панелі після (хвилин без дотику, 0 = ніколи)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "Адреса програвача Plex",
       "s.cd.plexCheck": "Перевірити підключення до Plex",
       "s.cd.plexHint": "Для керування Plex на цьому комп'ютері потрібен програвач Plex Companion, наприклад Caldera Amp. Запустіть Caldera Amp один раз і увійдіть; він працює у фоні, і вікно тримати відкритим не потрібно. Plexamp на цьому комп'ютері працює зі звичайними медіавіджетами. Вставте адресу свого сервера Plex і свій X-Plex-Token.",
-      "s.cd.plexChecking": "Перевірка…"
+      "s.cd.plexPlaylistHint": "Ціль: ID плейлиста Plex. Виберіть його зі списку нижче.",
+      "s.cd.plexLoadLists": "Завантажити плейлисти Plex",
+      "s.cd.plexFull": "Control Deck заповнений (512 елементів керування). Видаліть елемент, перш ніж додавати плейлист.",
+      "s.cd.plexChoose": "Виберіть плейлист Plex…",
+      "s.cd.plexNone": "Плейлисти Plex не знайдено. Спершу збережіть адресу сервера й токен.",
+      "s.cd.plexChecking": "Перевірка…",
+      "s.cd.plexLoading": "Завантаження…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "Лише ця категорія (її категорія в налаштуваннях; порожньо = усі)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "Телефон може запускати ігри (вимк.: бібліотека лише показується)",
       "Ask before starting (tap a game twice)": "Питати перед запуском (торкнутися гри двічі)",
       "Plex queue": "Черга Plex",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Що грає і що далі в програвачі Plex, наприклад Caldera Amp; торкніться треку, щоб відтворити його."
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "Що грає і що далі в програвачі Plex, наприклад Caldera Amp; торкніться треку, щоб відтворити його.",
+      "Page buttons": "Кнопки сторінок",
+      "Buttons that open your pages; the page you are on is highlighted.": "Кнопки, що відкривають ваші сторінки; поточна сторінка виділена.",
+      "Pages (none ticked = all)": "Сторінки (нічого не позначено = усі)",
+      "Plex playlists": "Плейлисти Plex",
+      "Start configured Plex playlists on a Plex player.": "Запускає налаштовані плейлисти Plex у програвачі Plex.",
+      "Plex playlists (none ticked = all)": "Плейлисти Plex (нічого не позначено = усі)"
     },
     "panel": {
       "% load": "% завантаження",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "Місяць",
       "{n}% lit": "Освітлено {n}%",
       "Core {n} MHz": "Ядро {n} МГц",
-      "Battery care": "Догляд за батареєю"
+      "Battery care": "Догляд за батареєю",
+      "Add a Plex playlists widget to an enabled page": "Додайте віджет плейлистів Plex на увімкнену сторінку"
     }
   }
 });

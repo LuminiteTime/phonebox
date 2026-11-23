@@ -139,7 +139,7 @@ app.MapPost("/api/controls/spotify/action/{action}", async (string action, strin
 app.MapGet("/api/controls/plex/state", async (PlexControl plex, CancellationToken ct) => Results.Json(await plex.Snapshot(ct)));
 app.MapPost("/api/controls/plex/action/{action}", async (string action, string? id, PlexControl plex, ControlDeck deck, CancellationToken ct) =>
 {
-    var res = action == "play-queued"
+    var res = action is "play-queued" or "playlist"
         ? await deck.RunWithMediaFocusAsync(async token =>
         {
             var result = await plex.Act(action, id, token);
@@ -149,8 +149,9 @@ app.MapPost("/api/controls/plex/action/{action}", async (string action, string? 
         : await plex.Act(action, id, ct);
     return Results.Json(res);
 });
-// settings page only (not in Lan.AllowedOverLan, not gated): Check connection
+// settings page only (not in Lan.AllowedOverLan, not gated): Check connection and the playlist picker
 app.MapGet("/api/controls/plex/check", async (PlexControl plex, CancellationToken ct) => Results.Json(await plex.Check(ct)));
+app.MapGet("/api/controls/plex/playlists", async (PlexControl plex, CancellationToken ct) => Results.Json(await plex.Playlists(ct)));
 app.MapGet("/api/controls/spotify/connect", (SpotifyControl spotify) =>
 { try { return Results.Json(new { url = spotify.Begin(), redirectUri = spotify.RedirectUri }); } catch (InvalidOperationException ex) { return Results.BadRequest(new { error = ex.Message }); } });
 app.MapPost("/api/controls/spotify/disconnect", async (SpotifyControl spotify, CancellationToken ct) => { await spotify.Disconnect(ct); return Results.Ok(); });
@@ -698,12 +699,24 @@ app.MapGet("/api/discord", (DiscordMonitor dc, ConfigStore cfg) => Results.Json(
     snapshot = dc.Snapshot(),
     control = DiscordMonitor.ControlAllowed(cfg.Get()),
     share = DiscordMonitor.ShareWanted(cfg.Get()),
+    widgetControl = DiscordMonitor.WidgetControl(cfg.Get()),
+    chat = DiscordMonitor.ChatWanted(cfg.Get()),
+    chatUnread = dc.ChatUnread(),
 }));
 // Screen share (its own switch, off by default): the state, and the running apps (names only) while
 // the phone's share view is open. It needs a widget's control (the global switch is not enough). code: what went wrong, for the panel to say in its language.
 app.MapGet("/api/discord/share", (bool? apps, DiscordMonitor dc) => Results.Json(dc.Share(apps == true)));
 app.MapPost("/api/discord/share/{action}", async (string action, int? pid, DiscordMonitor dc) =>
     await dc.ShareActAsync(action, pid) is { } e ? Results.BadRequest(new { error = e.Error, code = e.Code }) : Results.Ok(new { ok = true }));
+// Chat (read-only, Settings › General › Discord › chat, off by default): the chosen channel's last messages, the servers
+// or, for the phone's channel picker (?picker=true), no messages but the text channels of ?guild=. Only while the setting
+// is on and a Discord widget is on an enabled page; message text comes from memory only.
+app.MapGet("/api/discord/chat", async (string? guild, bool? picker, DiscordMonitor dc, CancellationToken ct) =>
+    Results.Json(await dc.ChatAsync(guild, picker == true, ct)));
+app.MapPost("/api/discord/chat/choose", (string? channel, DiscordMonitor dc) =>
+    dc.ChatChoose(channel) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
+app.MapPost("/api/discord/chat/open", async (DiscordMonitor dc) =>
+    await dc.ChatOpenAsync() is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
 // Ids go in the query string: the Android app lets image requests through by exact path (READ_ONLY_IMAGES).
 app.MapGet("/api/discord/img", async (string kind, string id, string hash, DiscordMonitor dc, CancellationToken ct) =>
     await dc.ImageAsync(kind, id, hash, ct) is { } img

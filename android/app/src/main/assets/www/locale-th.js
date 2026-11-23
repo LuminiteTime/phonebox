@@ -219,6 +219,14 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "w.discord.shareGone": "แอปนี้ไม่อยู่ในรายการแล้ว",
       "w.discord.shareNotDirect": "Discord แชร์แอปนี้โดยตรงไม่ได้ ให้ใช้ เลือกบน PC",
       "w.discord.shareRefused": "Discord นี้ไม่อนุญาตให้ PhoneBox ติดตามการแชร์หน้าจอ",
+      "w.discord.chat": "แชท",
+      "w.discord.closeChat": "กลับไปที่ช่อง",
+      "w.discord.chatOff": "เปิดแชทใน การตั้งค่า › ทั่วไป › Discord",
+      "w.discord.chatApprove": "อนุมัติ PhoneBox ใน Discord เพื่อดูแชท",
+      "w.discord.pickChannel": "เลือกช่อง",
+      "w.discord.voiceChat": "แชทของช่องเสียง",
+      "w.discord.openInDiscord": "เปิดใน Discord",
+      "w.discord.noMessages": "ยังไม่มีข้อความ",
       "w.discord.turnOn": "เปิดใช้ Discord ใน ตั้งค่า › ทั่วไป",
       "w.discord.failed": "Discord ไม่ได้ทำ",
       "w.discord.otherServer": "อื่น ๆ",
@@ -233,6 +241,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.discord.allowControlHint": "สำหรับคำสั่ง /api/discord ของเอเจนต์: ปิดไมค์ ปิดเสียง โหมดอินพุต ออก และเข้าร่วม ปิด: ใช้ได้เฉพาะเมื่อมีวิดเจ็ต Discord ที่เปิดการควบคุมอยู่บนหน้าที่เปิดใช้งาน เปิด: ใช้ได้โดยไม่ต้องมีวิดเจ็ต ทั้งสองกรณี ทุกอย่างที่เรียกเอเจนต์ได้จะใช้คำสั่งเหล่านี้ได้ ไม่ใช่แค่วิดเจ็ต: โทรศัพท์ที่จับคู่ไว้ (USB หรือ Wi-Fi) และโปรแกรมบนคอมพิวเตอร์นี้",
       "s.discord.screenShare": "เริ่มและหยุดการแชร์หน้าจอ Discord จากโทรศัพท์",
       "s.discord.screenShareHint": "ขอสิทธิ์เริ่มแชร์หน้าจอจาก Discord ดังนั้น Discord จะให้คุณอนุมัติ PhoneBox อีกครั้ง ขณะเปิดหน้าแชร์บนโทรศัพท์ PhoneBox จะแสดงแอปที่มีหน้าต่างบนคอมพิวเตอร์นี้ (เฉพาะชื่อ) Discord เป็นผู้ตัดสินว่าแชร์อะไรได้โดยตรง สำหรับอย่างอื่นให้ใช้ตัวเลือกของ Discord บนคอมพิวเตอร์ ต้องมีวิดเจ็ต Discord ที่เปิดการควบคุมด้วย",
+      "s.discord.chat": "แสดงแชท Discord และจุดข้อความใหม่บนโทรศัพท์ (อ่านอย่างเดียว)",
+      "s.discord.chatHint": "ส่งข้อความของช่องที่คุณเปิดในวิดเจ็ตไปยังโทรศัพท์ ขอสิทธิ์อ่านข้อความจาก Discord ดังนั้น Discord จะให้คุณอนุมัติ PhoneBox อีกครั้ง ข้อความอยู่ในหน่วยความจำเท่านั้น (ไม่เขียนลงไฟล์หรือบันทึก) และหายไปเมื่อ Discord ตัดการเชื่อมต่อหรือปิดตัวเลือกนี้ หากปฏิเสธ จะปิดเฉพาะแชทเท่านั้น",
       "w.steam.turnOn": "เชื่อมต่อ Steam ในตัวตั้งค่า › ทั่วไป",
       "w.steam.stale": "การปรับปรุงข้อมูล Steam ล้มเหลว แสดงข้อมูลเก่า",
       "w.steam.onlineCount": "{online} อยู่บนเว็บ {total} เพื่อน",
@@ -327,7 +337,7 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.nav.webhooks": "เวบฮูก",
       "s.nav.general": "ทั่วไป",
       "s.nav.advanced": "ระดับสูง",
-      "s.pages.lead": "หน้าแต่ละหน้าเป็นตารางวิดเจ็ตขนาด 12 x6ตัวเลือก เลือกหน้าด้านซ้าย และจัดเรียงวิดเจตต์บนโทรศัพท์ด้านล่างนี้ แล้วตั้งค่าตัวเลือกของมัน โยนหน้าเพื่อจัดเรียงใหม่ โดยหน้าแรกจะเป็นหน้าที่พาเนลจะกลับไปเมื่อไม่มีการใช้งาน ในโทรศัพ ท์ ให้คลิก, ใช้ปุ่มปรับระดับเสียง หรือกดจุด (หรือกดหน้านานๆ) เพื่อดูรายละเอียดของหน้าทั้งหมด",
+      "s.pages.lead": "หน้าแต่ละหน้าเป็นตารางวิดเจ็ตขนาด 12 x6ตัวเลือก เลือกหน้าด้านซ้าย และจัดเรียงวิดเจตต์บนโทรศัพท์ด้านล่างนี้ แล้วตั้งค่าตัวเลือกของมัน โยนหน้าเพื่อจัดเรียงใหม่ โดยหน้าแรกจะเป็นหน้าที่พาเนลจะกลับไปเมื่อไม่มีการใช้งาน ในโทรศัพท์ ให้ปัด ใช้ปุ่มปรับระดับเสียง หรือแตะจุดเพื่อไปยังหน้านั้น (หรือเลื่อนนิ้วไปตามจุดเพื่อเลือกหน้า) แตะจุดปัจจุบันหรือปุ่มตารางข้างจุด หรือกดที่ว่างบนหน้าค้างไว้ เพื่อดูภาพรวมของทุกหน้า",
       "s.pages.layout": "จัดวาง",
       "s.pages.livePreview": "แสดงตัวอย่างสด",
       "s.shortcuts.lead": "ปุ่มที่แสดงโดยตารางทางลัด และวิดเจ็ตปุ่มใหญ่ คลิกปุ่มเพื่อแก้ไขมัน, โยนเพื่อจัดเรียงใหม่ โทรศัพท์จะส่งเพียงหมายเลขของปุ่มเท่านั้น; คำสั่งจะไม่เคยออกจากคอมพิวเตอร์นี้",
@@ -408,6 +418,15 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.display.unreachableNightDelay": "จำนวนนาทีก่อนหน้าจอกลางคืนจะปรากฏ",
       "s.display.proximityWake": "มือที่อยู่ใกล้โทรศัพท์ ปลุกจอกลางคืน",
       "s.display.controlsTop": "จุดบนหน้า และปุ่มอนุญาต/ ปฏิเสธ ที่ด้านบนของจอภาพ",
+      "s.display.pageBar": "การเปลี่ยนหน้า",
+      "s.display.pageBar.dots": "จุด",
+      "s.display.pageBar.auto": "แถบหน้าเมื่อแตะจุด",
+      "s.display.pageBar.bar": "แถบหน้า แสดงตลอด",
+      "s.display.pageBarSide": "ตำแหน่งแถบหน้า",
+      "s.display.pageBarSide.bottom": "ล่าง",
+      "s.display.pageBarSide.left": "ซ้าย",
+      "s.display.pageBarSide.right": "ขวา",
+      "s.display.pageBarHint": "แถบหน้าจะแสดงไอคอนและชื่อของแต่ละหน้า แตะเพื่อไปยังหน้านั้น ถ้าแสดงตลอด แถบจะใช้พื้นที่ส่วนหนึ่งของหน้าจอและหน้าจะเล็กลงเล็กน้อย",
       "s.oled.title": "OLED ป้องกันการเผาไหม้",
       "s.oled.pixelShift": "ขยับพาเนลทุก2นาทีไม่กี่พิกเซล และนาฬิกากลางคืนรอบหน้าจอ",
       "s.oled.idleDim": "ปรับสีของพาเนลให้เข้มลงหลังจาก (นาทีโดยไม่ต้องสัมผัส,0=ไม่เคย)",
@@ -944,7 +963,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "s.cd.plexPlayer": "ที่อยู่เครื่องเล่น Plex",
       "s.cd.plexCheck": "ตรวจสอบการเชื่อมต่อ Plex",
       "s.cd.plexHint": "การควบคุม Plex ต้องมีเครื่องเล่น Plex Companion เช่น Caldera Amp บนคอมพิวเตอร์เครื่องนี้ เปิด Caldera Amp หนึ่งครั้งแล้วลงชื่อเข้าใช้ โปรแกรมจะทำงานอยู่เบื้องหลังและไม่มีหน้าต่างที่ต้องเปิดค้างไว้ ส่วน Plexamp บนคอมพิวเตอร์เครื่องนี้ใช้งานได้กับวิดเจ็ตสื่อทั่วไป วางที่อยู่เซิร์ฟเวอร์ Plex และ X-Plex-Token ของคุณ",
-      "s.cd.plexChecking": "กำลังตรวจสอบ…"
+      "s.cd.plexPlaylistHint": "เป้าหมาย: ID เพลย์ลิสต์ Plex เลือกจากรายการด้านล่าง",
+      "s.cd.plexLoadLists": "โหลดเพลย์ลิสต์ Plex",
+      "s.cd.plexFull": "Control Deck เต็มแล้ว (512 การควบคุม) ลบการควบคุมออกหนึ่งรายการก่อนเพิ่มเพลย์ลิสต์",
+      "s.cd.plexChoose": "เลือกเพลย์ลิสต์ Plex…",
+      "s.cd.plexNone": "ไม่พบเพลย์ลิสต์ Plex บันทึกที่อยู่เซิร์ฟเวอร์และโทเค็นก่อน",
+      "s.cd.plexChecking": "กำลังตรวจสอบ…",
+      "s.cd.plexLoading": "กำลังโหลด…"
     },
     "catalog": {
       "Only this category (its category in Settings; empty = all)": "เฉพาะหมวดหมู่นี้ (หมวดหมู่ในการตั้งค่า; ว่าง = ทั้งหมด)",
@@ -1652,7 +1677,13 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Let the phone start games (off: the library is only shown)": "ให้โทรศัพท์เริ่มเกมได้ (ปิด: แสดงคลังเกมอย่างเดียว)",
       "Ask before starting (tap a game twice)": "ถามก่อนเริ่ม (แตะเกมสองครั้ง)",
       "Plex queue": "คิว Plex",
-      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "ดูว่ากำลังเล่นอะไรและเพลงถัดไปบนเครื่องเล่น Plex เช่น Caldera Amp แตะเพลงเพื่อเล่น"
+      "What is playing and what comes next on a Plex player such as Caldera Amp; tap a track to play it.": "ดูว่ากำลังเล่นอะไรและเพลงถัดไปบนเครื่องเล่น Plex เช่น Caldera Amp แตะเพลงเพื่อเล่น",
+      "Page buttons": "ปุ่มหน้า",
+      "Buttons that open your pages; the page you are on is highlighted.": "ปุ่มสำหรับเปิดหน้าต่าง ๆ ของคุณ หน้าที่กำลังแสดงจะถูกไฮไลต์",
+      "Pages (none ticked = all)": "หน้า (ไม่เลือกเลย = ทั้งหมด)",
+      "Plex playlists": "เพลย์ลิสต์ Plex",
+      "Start configured Plex playlists on a Plex player.": "เริ่มเพลย์ลิสต์ Plex ที่กำหนดไว้บนเครื่องเล่น Plex",
+      "Plex playlists (none ticked = all)": "เพลย์ลิสต์ Plex (ไม่เลือกเลย = ทั้งหมด)"
     },
     "panel": {
       "% load": "ค่า",
@@ -1948,7 +1979,8 @@ window.PhoneBoxLocaleData = Object.assign(window.PhoneBoxLocaleData || {}, {
       "Moon": "ดวงจันทร์",
       "{n}% lit": "สว่าง {n}%",
       "Core {n} MHz": "คอร์ {n} MHz",
-      "Battery care": "ดูแลแบตเตอรี่"
+      "Battery care": "ดูแลแบตเตอรี่",
+      "Add a Plex playlists widget to an enabled page": "เพิ่มวิดเจ็ตเพลย์ลิสต์ Plex ในหน้าที่เปิดใช้งาน"
     }
   }
 });

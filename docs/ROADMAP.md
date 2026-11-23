@@ -59,11 +59,6 @@ people who proposed or prototyped something are credited in the [changelog](../C
 
 Agreed in principle, not being built in-house. Say so on the issue before starting.
 
-- **Read-only Discord chat on the phone** ([#356](https://github.com/ersinkoc/phonebox/issues/356)): the text chat of
-  the voice channel you're in or a picked channel, with new-message dots, behind its own switch (off by default,
-  `messages.read`, message text in memory only). The code is written and reviewed in
-  [#368](https://github.com/ersinkoc/phonebox/pull/368) (by AlberBM), but was never tried against the real Discord
-  app: it needs someone who can test it there, then a rebase onto the screen-share scope code from #416.
 - **Typing from the phone's keyboard**: a text field and a row of keys (Enter, Backspace, Esc, Tab, arrows, optionally
   Ctrl / Alt / Shift) on the Dictation widget, behind its **Type the text on the computer** switch and through
   `/api/dictate`; nothing logged or stored ([#320](https://github.com/ersinkoc/phonebox/issues/320)).
@@ -87,6 +82,10 @@ Agreed in principle, not being built in-house. Say so on the issue before starti
   the timed lyric of the current track and follows the playback position. The agent looks the track up on LRCLIB
   (title, artist, album, duration) only when the user turns the lookup on and only while such a widget is on an enabled
   page; results stay in memory, and the phone never contacts LRCLIB.
+- **CPU power on the CPU tile** ([#442](https://github.com/ersinkoc/phonebox/issues/442)): the package power next
+  to the CPU temperature (`92°C · 42 W`) and a CPU POWER chart, like the GPU tile has. On Windows it is in the same
+  LibreHardwareMonitor `data.json` the agent already reads; on Linux it could come from RAPL
+  (`/sys/class/powercap/intel-rapl:0/energy_uj`) where readable.
 - **A larger device switcher** ([#340](https://github.com/ersinkoc/phonebox/issues/340)): bigger touch targets for the
   computers in the all-pages overview, each with an icon (emoji or uploaded picture) and a colour set per computer.
 
@@ -100,8 +99,8 @@ Agreed in principle, not being built in-house. Say so on the issue before starti
   ([#215](https://github.com/ersinkoc/phonebox/issues/215)): needs a documented Antigravity hook that waits for an
   answer, like the one Claude Code has. A permission gate built on undocumented internals could approve the wrong
   thing after an Antigravity update.
-- **Power standby on Android 8+** ([#30](https://github.com/ersinkoc/phonebox/issues/30)): pull request
-  [#32](https://github.com/ersinkoc/phonebox/pull/32) was closed; a new pull request built on its review is welcome.
+- **Power standby on Android 8+** ([#30](https://github.com/ersinkoc/phonebox/issues/30)): continued from
+  [#32](https://github.com/ersinkoc/phonebox/pull/32) in the draft [#430](https://github.com/ersinkoc/phonebox/pull/430).
 
 ## Waiting on a report
 

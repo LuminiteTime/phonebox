@@ -106,13 +106,31 @@ to the widget. While you are in a voice channel:
 - The commands and the permissions are not in Discord's public documentation, so a Discord update can change them. When
   Discord refuses them, only screen share is off.
 
+## Chat (read-only)
+
+**Settings › General › Discord › Show Discord chat** (off by default) adds a 💬 button to the widget. It shows the
+text chat of the voice channel you are in, or a text channel you pick from your servers, and a red dot when a channel
+you opened on the phone has a message from someone else you haven't seen. The phone cannot write: **Open in Discord**
+(needs the **Control** option of a Discord widget on an enabled page; `discord.allowControl` is not enough) only shows
+that channel in the Discord app on the computer.
+
+- Turning it on asks Discord for one more permission, `messages.read`, so **Discord asks you to approve PhoneBox again**
+  (the widget waits for your answer; an approval that isn't answered times out after two minutes). If you decline,
+  PhoneBox goes on with the permissions it had, or asks for the base ones when it had none, and only the chat stays off.
+  To be asked again, turn the setting off and on.
+- The agent reads a channel only while the chat is open on the phone (the last 30 messages), and follows new messages
+  for at most 25 channels you opened. Listing the channels to pick from reads no messages. Message text is kept in memory
+  only: never written to a file or the log, and dropped when the connection to Discord ends or the setting is turned off,
+  when Discord is also told to stop sending it.
+- The chat answers only while a Discord widget is on an enabled page.
+
 ## What is requested
 
 The login asks for these Discord permissions, all of them on your own account and only through the local app:
 `rpc`, `rpc.voice.read`, `rpc.voice.write` and `rpc.notifications.read`, plus `rpc.screenshare.read` and
-`rpc.screenshare.write` only while screen share is on. Changing the requested permissions makes Discord ask you to approve
-PhoneBox again. The client secret stays on the computer and is never sent to the phone. See the Discord row in
-[PRIVACY.md](../PRIVACY.md) for the connections involved.
+`rpc.screenshare.write` only while screen share is on, and `messages.read` only while the chat is on. Changing the
+requested permissions makes Discord ask you to approve PhoneBox again. The client secret stays on the computer and is
+never sent to the phone. See the Discord row in [PRIVACY.md](../PRIVACY.md) for the connections involved.
 
 ## Troubleshooting
 
