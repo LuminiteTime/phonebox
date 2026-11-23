@@ -5,6 +5,7 @@ import { historyBars, ticks } from '../lib/meters.js';
 import { calm, heat } from '../lib/signal.js';
 import { alertState } from '../lib/alert.js';
 import { holdButton } from '../lib/motion.js';
+import { fork, pollGpu } from '../lib/fork.js';
 
 const LOAD_CALM = { band: 3, roll: 12 };
 const temp = (c) => (c == null ? '' : `${Math.round(c)}°C`);
@@ -60,16 +61,19 @@ export function cpuCell() {
 export function gpuCell() {
   const meter = ticks();
   const c = loadCell('GPU', meter);
-  const vram = h('span');
-  c.who.append(vram);
+  const users = h('span');
+  c.who.append(users);
   return {
     el: c.el,
     update(pc) {
+      pollGpu();
       const g = pc.gpu || {};
       const load = c.show(g.util, g.temp);
       meter.set(load);
       c.sub.textContent = g.vramUsed != null ? `память ${g.vramUsed.toFixed(1)} / ${Math.round(g.vramTotal)}G` : g.name || '';
-      vram.textContent = g.temp != null ? `${temp(g.temp)} · ${g.name || ''}` : g.name || '';
+      // the apps behind the load (agent/PhoneBox.Agent/Fork/GpuProcesses.cs); the GPU's name where it can't tell
+      const top = fork.gpu?.top || [];
+      users.textContent = top.length ? top.map((u) => `${u.name} ${Math.round(u.percent)}%`).join(' · ') : g.name || '';
     },
   };
 }

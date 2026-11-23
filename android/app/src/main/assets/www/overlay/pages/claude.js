@@ -1,12 +1,11 @@
-// "Claude": both usage windows in full (each with its own reset), the week by day, and the sessions.
+// "Claude": both usage windows in full (each with its own reset), tokens by day, and the sessions.
 import { W } from '../../registry.js';
-import { D, h, store } from '../../main.js';
+import { D, h } from '../../main.js';
 import { cell, label, number } from '../lib/ui.js';
 import { claudeLimits, clockLabel, countdown, openedAt, paceGap } from '../lib/quota.js';
-import { dailyUsage, remember } from '../lib/week.js';
+import { tokenDays } from '../lib/tokens.js';
+import { fork, pollClaude } from '../lib/fork.js';
 import { paceNote, quotaBar, sessionsCell } from '../cells/claude.js';
-
-const WEEK_KEY = 'x-week-usage';
 
 function metaRow(name) {
   const value = h('dd');
@@ -39,19 +38,22 @@ function windowCell(title, pick, cls = '') {
   };
 }
 
-function weekCell() {
+/** Claude Code tokens of the last seven days, from the session logs on the Mac. */
+function tokensCell() {
   const chart = h('div', 'x-days');
+  const head = label('Токены по дням', '');
+  let key = '';
   return {
-    el: cell('last', label('Неделя по дням', '% лимита'), chart),
-    update(limit) {
-      if (!limit) return;
-      const record = remember(store.get(WEEK_KEY, null), limit);
-      store.set(WEEK_KEY, record);
-      const days = dailyUsage(record, limit);
-      const top = Math.max(10, ...days.map((d) => d.pct ?? 0));
-      chart.replaceChildren(...days.map((d) => h('div', d.when,
-        h('i', null), h('span', null, d.when === 'future' ? '' : d.pct == null ? '—' : `${Math.round(d.pct)}`), h('small', null, d.label))));
-      [...chart.children].forEach((col, i) => col.style.setProperty('--v', (days[i].pct ?? 0) / top));
+    el: cell('last', head, chart),
+    update() {
+      pollClaude();
+      const week = fork.claude?.week;
+      if (!week?.length || JSON.stringify(week) === key) return;
+      key = JSON.stringify(week);
+      const days = tokenDays(week);
+      head.status.textContent = `сегодня ${days.at(-1).text}`;
+      chart.replaceChildren(...days.map((d) => h('div', d.today ? 'today' : '', h('i', null), h('span', null, d.text), h('small', null, d.label))));
+      [...chart.children].forEach((col, i) => col.style.setProperty('--v', days[i].share));
     },
   };
 }
@@ -64,13 +66,13 @@ W['x-claude'] = {
     const limits = () => claudeLimits(D.quotas);
     const session = windowCell('Окно 5 часов', () => limits().session);
     const week = windowCell('Неделя · все модели', () => limits().week, 'end');
-    const days = weekCell();
+    const days = tokensCell();
     const sessions = sessionsCell(5);
     box.append(session.el, week.el, days.el, sessions.el);
     const windows = () => { const { plan } = limits(); session.update(plan); week.update(); };
     const byKind = {
-      quotas: () => { windows(); days.update(limits().week); },
-      tick: windows,
+      quotas: windows,
+      tick: () => { windows(); days.update(); },
       work: () => sessions.update(),
     };
     return { update: (kind) => byKind[kind]?.() };

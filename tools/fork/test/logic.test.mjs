@@ -47,19 +47,15 @@ test('claudeLimits picks windows by length', () => {
   assert.deepEqual(claudeLimits(null), { session: null, week: null, plan: undefined });
 });
 
-import { dailyUsage, remember } from '../../../android/app/src/main/assets/www/overlay/lib/week.js';
+import { compact, tokenDays } from '../../../android/app/src/main/assets/www/overlay/lib/tokens.js';
 
-test('weekly record keeps first and last per day and resets with the window', () => {
-  const day = 86400_000;
-  const start = Date.UTC(2026, 10, 20, 12);
-  const limit = (percent) => ({ percent, resetsAt: start + 7 * day, windowSec: 604800 });
-  let rec = remember(null, limit(5), start + 1000);
-  rec = remember(rec, limit(9), start + 2000);
-  rec = remember(rec, limit(15), start + day + 1000);
-  const days = dailyUsage(rec, limit(15), start + day + 2000);
-  assert.deepEqual(days.slice(0, 3).map((d) => [d.pct, d.when]), [[4, "past"], [6, "today"], [null, "future"]]);
-  const next = remember(rec, { ...limit(1), resetsAt: start + 14 * day }, start + 8 * day);
-  assert.equal(Object.keys(next.days).length, 1);
+test('token days: compact values, shares of the busiest day, today last', () => {
+  assert.deepEqual([999, 1234, 1_570_000, 25_000_000].map(compact), ['999', '1K', '1.6M', '25M']);
+  const days = tokenDays([{ date: '2026-11-22', tokens: 2_000_000 }, { date: '2026-11-23', tokens: 0 }]);
+  assert.deepEqual(days, [
+    { label: 'вс', share: 1, text: '2.0M', today: false },
+    { label: 'пн', share: 0, text: '—', today: true },
+  ]);
 });
 
 import { stickyOrder } from '../../../android/app/src/main/assets/www/overlay/lib/order.js';

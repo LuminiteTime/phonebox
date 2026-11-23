@@ -500,6 +500,8 @@
 
   // fork: the fork's own agent endpoints (agent/PhoneBox.Agent/Fork, docs/fork/DESIGN.md)
   const forkDemo = (path) => {
+    if (path === '/api/fork/claude') return { week: [1.6, 0.4, 1.4, 2.3, 0, 0.9, 0.8].map((m, i) => ({ date: new Date(START - (6 - i) * 86400_000).toISOString().slice(0, 10), tokens: Math.round(m * 1e6), output: 0 })) };
+    if (path === '/api/fork/gpu') return { top: [{ name: 'Blender', percent: 61 }, { name: 'WindowServer', percent: 7 }] };
     if (path === '/api/fork/dev') return {
       vpn: { on: true, name: 'wireguard' },
       servers: [[3000, 'node', 'storefront'], [5173, 'node', 'phonebox-admin'], [5432, 'postgres', ''], [8000, 'python3.12', 'ml-api']]

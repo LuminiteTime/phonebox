@@ -16,5 +16,4 @@
 .x-days > div { display: grid; grid-template-rows: 1fr auto auto; align-items: end; text-align: center; font: var(--x-fs-label) var(--x-mono); color: var(--x-muted); }
 .x-days i { display: block; height: calc(var(--v, 0) * 100%); min-height: 2px; background: var(--x-claude); opacity: .75; transition: height var(--x-t-slow) var(--x-ease-out); }
 .x-days .today i { opacity: 1; box-shadow: 0 0 0 1px var(--x-text); }
-.x-days .future i { background: var(--x-off); opacity: 1; }
 .x-days span { margin-top: 4px; color: var(--x-text); min-height: 1.2em; }
