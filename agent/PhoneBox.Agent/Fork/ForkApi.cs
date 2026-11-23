@@ -21,6 +21,8 @@ public static class ForkApi
         app.MapPost("/api/fork/digest/open", (string? id, Digest digest) =>
             digest.Open(id) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
 
+        app.MapGet("/api/fork/claude", (ClaudeTokens tokens) => Results.Json(new { week = tokens.Week }));
+        app.MapGet("/api/fork/gpu", (GpuProcesses gpu) => Results.Json(new { top = gpu.Top }));
         app.MapGet("/api/fork/dev", (DevStatus dev) => Results.Json(new { servers = dev.Servers, vpn = dev.Vpn }));
         app.MapPost("/api/fork/dev/open", (int port, DevStatus dev) =>
             dev.Open(port) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
