@@ -1,0 +1,36 @@
+/* Fork: the Mac's settings page in the panel's instrument look (docs/fork/DESIGN.md). It re-maps the page's own
+   tokens, type, corners and depth; layout and behaviour stay upstream. Light by default, graphite in dark mode,
+   both from the same hue as the panel. One accent: the text colour itself (primary actions are inverted). */
+@import url("tokens.css");
+
+:root {
+  --bg: oklch(0.975 0.003 255); --panel: oklch(0.995 0.002 255); --panel-2: oklch(0.955 0.005 255);
+  --line: oklch(0.88 0.008 255); --text: oklch(0.2 0.012 255); --muted: oklch(0.5 0.015 255);
+  --accent: var(--text); --accent-ink: var(--bg);
+  --danger: oklch(0.58 0.19 30); --ok: oklch(0.6 0.15 150); --warn: oklch(0.7 0.15 70);
+  --shadow: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--x-bg); --panel: oklch(0.185 0.009 255); --panel-2: var(--x-raise); --line: var(--x-line);
+    --text: var(--x-text); --muted: var(--x-muted); --accent: var(--x-text); --accent-ink: var(--x-bg);
+    --danger: var(--x-crit); --ok: var(--x-ok); --warn: var(--x-warn);
+  }
+}
+
+body { font-family: var(--x-sans); letter-spacing: -0.005em; }
+code, kbd, pre, input[type=number], .mono { font-family: var(--x-mono); }
+h1, h2, h3 { letter-spacing: -0.015em; font-weight: 600; }
+
+/* square corners and no depth: hairlines carry the structure, like the panel */
+*, *::before, *::after { border-radius: 0 !important; box-shadow: none !important; }
+:is(input, select, textarea):focus-visible, button:focus-visible { outline: 1px solid var(--text); outline-offset: 1px; }
+
+/* switches: a hairline box with a square knob; on = filled with the text colour, knob in the page colour */
+.switch span { background: transparent; border: 1px solid var(--line); }
+.switch span::after { top: 2px; left: 2px; width: 16px; height: 16px; background: var(--muted); }
+.switch input:checked + span { background: var(--text); border-color: var(--text); }
+.switch input:checked + span::after { background: var(--bg); }
+
+/* section headings in small caps, as the panel's cell labels */
+h2 + p, .hint { color: var(--muted); }
