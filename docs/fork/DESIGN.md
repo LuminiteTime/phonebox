@@ -121,13 +121,24 @@ HN. Зеркала обхода пейволла (`freedium-mirror.cfd`, `freedi
 - **Agent:** the agent embeds `www/overlay/**` for the layout editor's live preview. Fork endpoints live in
   `agent/PhoneBox.Agent/Fork/` under `/api/fork/*` (one line in the USB/Wi-Fi allow-list, `Lan.AllowedOverLan`).
 
-## Updates
+## CI/CD
 
-1. A push to `main` touching the agent or the app runs `.github/workflows/fork-release.yml`: release
-   `v<upstream version>.<run>` with the signed APK and the signed Mac agent (`osx-arm64`), plus `SHA256SUMS`.
-   Signing keys are repository secrets; local copies stay in `~/.config/phonebox-fork` (back them up).
-2. The agent's updater reads `Updates.Repo` (default `LuminiteTime/phonebox` in the fork), replaces itself and restarts.
-3. The app asks the agent every 15 minutes (`GET /api/fork/app?have=<version>`, USB or Wi-Fi) and installs a newer APK
-   with PackageInstaller (`SelfUpdate.kt`). Android 12+ installs silently once the app is its own installer of record;
-   the first self-update, and older systems, ask once.
-4. Merging upstream: `git fetch upstream && git merge upstream/main`, fix the README counts, push. The release follows.
+- **Ветки и PR.** В `main` только через pull request: обязательная проверка `ci`, ветка должна быть актуальной,
+  прямые пуши и force-push запрещены (в том числе админу). Мёрж апстрима тоже идёт через PR (merge commit), остальное
+  через squash.
+- **CI** (`.github/workflows/fork-ci.yml`) только на PR. Джоба `changes` смотрит изменённые пути и запускает лишь
+  нужное: юнит-тесты агента, сборку и lint приложения, UI-тесты в браузере, логику форка и метаданные релиза. PR с одними
+  доками проходит гейт `ci` за секунды, ничего не собирая. Новый пуш в PR отменяет устаревший прогон; у джоб есть таймауты,
+  NuGet, Gradle, npm и Playwright кэшируются.
+- **CD** (`.github/workflows/fork-release.yml`) запускается на мёрж в `main`, только если меняется поставляемый код:
+  агент или исходники приложения, не тесты и не доки. Тесты уже прошли в PR, поэтому здесь только сборка подписанного APK
+  и Mac-агента (`osx-arm64`), smoke-тест агента и релиз `v<upstream>.<run>` с `SHA256SUMS` и заметками из PR.
+  Ключи подписи лежат в секретах репозитория, локальные копии в `~/.config/phonebox-fork` (их стоит забэкапить).
+- **Доставка.** Агент на Mac раз в час проверяет релизы `Updates.Repo` (в форке `LuminiteTime/phonebox`), сам
+  заменяет себя и перезапускается. Приложение раз в 15 минут спрашивает агента (`GET /api/fork/app?have=<версия>`, по USB
+  или Wi-Fi) и ставит новый APK через PackageInstaller (`SelfUpdate.kt`). На Android 12+ это происходит молча, когда
+  приложение стало установщиком самого себя; первое самообновление и старые системы один раз спросят подтверждение.
+- **Апстримные workflow** (`build`, `release`, `signing test`, `artifact contract`, `pages`) в форке выключены в
+  настройках Actions, а не правкой файлов, чтобы мёржи апстрима проходили без конфликтов.
+- **Мёрж апстрима:** `git fetch upstream && git switch -c sync/upstream && git merge upstream/main`, поправить счётчики в
+  README, открыть PR.

@@ -1,22 +1,33 @@
-# Fork: every push to main that touches the agent or the app becomes a release of this fork, numbered
-# <upstream version>.<run number>. The agent's own updater (Updates.Repo = this fork) picks it up and updates
-# itself, and the app updates itself from the agent over USB or Wi-Fi (docs/fork/DESIGN.md, "Updates").
+# Fork CD (docs/fork/DESIGN.md, "CI/CD"): a merge to main that changes what ships (the agent or the app, not their
+# tests or docs) becomes a release numbered <upstream version>.<run number>. main only takes pull requests that passed
+# fork-ci.yml and were up to date, so this builds tested code and runs no tests again. The agent's updater
+# (Updates.Repo = this fork) installs the release, and the app updates itself from the agent.
 # Only the Mac agent (osx-arm64) and the APK are built: the fork runs on one Mac and one tablet.
 name: fork-release
 
 on:
   push:
     branches: [main]
-    paths: ['agent/PhoneBox.Agent/**', 'android/**', '.github/workflows/fork-release.yml']
+    paths:
+      - 'agent/PhoneBox.Agent/**'
+      - 'android/app/src/main/**'
+      - 'android/app/build.gradle.kts'
+      - 'android/build.gradle.kts'
+      - 'android/settings.gradle.kts'
+      - 'android/gradle/**'
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: fork-release
-  cancel-in-progress: false
+  cancel-in-progress: false # a release that started finishes; the next one queues
 
 jobs:
   version:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       version: ${{ steps.v.outputs.version }}
       code: ${{ steps.v.outputs.code }}
@@ -32,6 +43,7 @@ jobs:
   apk:
     needs: version
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
@@ -60,10 +72,12 @@ jobs:
         with:
           name: release-apk
           path: dist/
+          retention-days: 3
 
   agent:
     needs: version
     runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
@@ -86,10 +100,12 @@ jobs:
         with:
           name: release-agent
           path: dist/
+          retention-days: 3
 
   publish:
     needs: [version, apk, agent]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -104,6 +120,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           V: ${{ needs.version.outputs.version }}
         run: |
-          sha256sum * > "SHA256SUMS-$V.txt"
-          gh release create "v$V" * -R "${{ github.repository }}" --target "${{ github.sha }}" \
-            --title "PhoneBox fork $V" --notes "Built from ${{ github.sha }}. Installed automatically by the agent."
+          sha256sum -- * > "SHA256SUMS-$V.txt" # bare names: the agent matches them exactly
+          gh release create "v$V" ./* -R "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "PhoneBox fork $V" --generate-notes
