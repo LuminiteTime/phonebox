@@ -2,7 +2,7 @@
    The cover's colour (--x-art, set by pages/music.js) washes the player and lights the play button, the position and
    the volume, so each song gives the page its own colour. */
 .x-music {
-  grid-template: 1fr / 1fr 360px;
+  grid-template: 1fr / 1fr;
   --x-art: 120, 128, 150;
   --x-acc: oklch(from rgb(var(--x-art)) max(l, 0.76) min(c, 0.16) h);
 }
@@ -10,7 +10,7 @@
 
 .x-media.w-media {
   height: 100%; padding: 0; display: grid; gap: 0 36px;
-  grid-template: "art meta" 1fr "art rate" auto "bar bar" auto "ctl ctl" auto / minmax(0, 420px) minmax(0, 1fr);
+  grid-template: "art meta" 1fr "art rate" auto "bar bar" auto "ctl ctl" auto / minmax(0, 470px) minmax(0, 1fr);
 }
 .x-media .m-top { display: contents; }
 .x-media .art-wrap { grid-area: art; align-self: end; width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; box-shadow: 0 24px 60px -20px rgba(var(--x-art), .55); background: var(--x-raise); }
@@ -19,15 +19,16 @@
 
 .x-media .m-text { grid-area: meta; align-self: end; gap: 12px; min-width: 0; }
 .x-media .m-app { font: var(--x-fs-label) var(--x-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--x-acc); }
-.x-media .m-title { font: 650 44px/1.05 var(--x-sans); letter-spacing: -0.025em; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.x-media .m-artist { font: 21px/1.3 var(--x-sans); color: var(--x-muted); white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.x-media .m-title { font: 650 56px/1.02 var(--x-sans); letter-spacing: -0.025em; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.x-media .m-artist { font: 24px/1.3 var(--x-sans); color: var(--x-muted); white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* rating the playing track: two hairline buttons; a liked song fills the heart in the cover's colour */
-.x-rate { grid-area: rate; display: flex; gap: 8px; margin-top: 24px; }
+/* rating the playing track: two hairline buttons (a liked song fills the heart in the cover's colour), or the sign-in */
+.x-rate { grid-area: rate; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-top: 28px; }
 .x-rate-btn { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px; border: 1px solid var(--x-line);
   font: 500 var(--x-fs-body) var(--x-sans); color: var(--x-text); cursor: pointer; }
 .x-rate-btn svg { width: 20px; height: 20px; }
 .x-rate-btn:active { background: var(--x-raise); }
+.x-rate-btn:disabled { opacity: .4; }
 .x-rate-btn.like.on { border-color: var(--x-acc); color: var(--x-acc); }
 .x-rate-btn.like.on svg { fill: currentColor; }
 
@@ -54,15 +55,5 @@
 .x-media input[type=range]::-webkit-slider-thumb { width: 22px; height: 22px; border-radius: 0; margin-top: -8px; box-shadow: none; background: var(--x-text); }
 .x-media .vol-val { width: 3ch; text-align: right; font: var(--x-fs-body) var(--x-mono); color: var(--x-muted); }
 
-/* Yandex Music column: My Wave as one wide key, then the liked tracks with the playing one lit */
-.x-wave { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 16px; width: 100%; height: 76px; margin: 12px 0 24px; padding: 0 18px;
-  border: 1px solid var(--x-line); cursor: pointer; }
-.x-wave svg { width: 28px; height: 28px; color: var(--x-acc); }
-.x-wave span { display: flex; flex-direction: column; gap: 3px; }
-.x-wave b { font: 600 17px var(--x-sans); }
-.x-wave small { font: var(--x-fs-small) var(--x-mono); color: var(--x-muted); }
-.x-wave:active { background: var(--x-raise); }
-.x-row.track { grid-template-columns: 1fr; gap: 2px; }
-.x-row.track span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.x-row.track.now span { color: var(--x-acc); }
 .x-code { margin: 6px 0 2px; font: 500 var(--x-fs-num-s) var(--x-mono); letter-spacing: .18em; color: var(--x-text); }
+.x-code-hint { font: var(--x-fs-small) var(--x-mono); color: var(--x-muted); }

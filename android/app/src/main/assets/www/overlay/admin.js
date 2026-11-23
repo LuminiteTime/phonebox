@@ -18,6 +18,26 @@
   const el = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; e.append(...kids); return e; };
   const card = (ref) => (ref[0] === '#' ? document.querySelector(ref) : document.querySelector(`h3[data-i18n="${ref}"]`)?.closest('.card'));
 
+  // the tablet app's update (agent/PhoneBox.Agent/Fork/AppUpdates.cs): what it runs, what it last said, and "now"
+  function appCard() {
+    const facts = el('p', 'x-app-facts'), said = el('p', 'x-app-said');
+    const now = el('button', 'btn', 'Обновить сейчас');
+    const show = async () => {
+      try {
+        const s = await (await fetch('/api/fork/app/state')).json();
+        facts.textContent = `На планшете ${s.installed ?? '?'}, последняя ${s.latest ?? '?'}`;
+        said.textContent = s.push ? 'Жду планшет: он проверяет раз в 30 секунд…'
+          : s.last ? `Планшет ${new Date(s.last.at).toLocaleTimeString('ru')}: ${s.last.text}` : 'Планшет ещё ничего не сообщал';
+      } catch (_) { said.textContent = 'Агент не ответил'; }
+    };
+    now.onclick = async () => { await fetch('/api/fork/app/now', { method: 'POST' }); show(); };
+    setInterval(() => { if (location.hash === '#connect') show(); }, 5000);
+    show();
+    const c = el('div', 'card', el('h3', null, 'Приложение на планшете'), facts, said, el('div', 'row', now));
+    c.dataset.xGroup = 'connect';
+    return c;
+  }
+
   const general = $('general');
   const nav = $('nav');
   const generalLink = nav.querySelector('a[href="#general"]');
@@ -43,6 +63,8 @@
     el('div', 'row', showQr, state));
   general.querySelector('[data-x-group="connect"]').before(pairCard);
   pairCard.dataset.xGroup = 'connect';
+
+  general.querySelector('.x-pair').after(appCard());
 
   const headerPair = el('button', 'btn primary', 'Подключить планшет');
   headerPair.onclick = () => { location.hash = '#connect'; $('lanPair').click(); };

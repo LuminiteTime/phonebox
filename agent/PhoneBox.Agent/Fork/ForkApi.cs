@@ -14,7 +14,7 @@ public static class ForkApi
         Monitor<DevStatus>(services);
         Monitor<GpuProcesses>(services);
         Monitor<ClaudeTokens>(services);
-        services.AddSingleton<YandexAuth>().AddSingleton<YandexMusic>();
+        services.AddSingleton<YandexAuth>().AddSingleton<YandexMusic>().AddSingleton<AppUpdates>();
     }
 
     private static void Monitor<T>(IServiceCollection services) where T : class, IHostedService
@@ -25,14 +25,7 @@ public static class ForkApi
 
     public static void MapFork(this WebApplication app)
     {
-        // The app asks with its own version; 204 while it is current, else the newer APK (X-Version names it).
-        app.MapGet("/api/fork/app", async (string have, UpdateService upd, HttpContext ctx, CancellationToken ct) =>
-        {
-            var apk = await upd.LatestApkAsync(ct);
-            if (apk is not { } a || !IsNewer(a.Version, have)) return Results.NoContent();
-            ctx.Response.Headers["X-Version"] = a.Version;
-            return Results.File(a.Path, "application/vnd.android.package-archive");
-        });
+        AppUpdates.Map(app);
 
         app.MapGet("/api/fork/digest", (Digest digest) => Results.Json(new { items = digest.Items, mirror = digest.Mirror }));
         app.MapPost("/api/fork/digest/open", (string? id, Digest digest) =>
@@ -42,15 +35,9 @@ public static class ForkApi
         app.MapGet("/api/fork/gpu", (GpuProcesses gpu) => Results.Json(new { top = gpu.Top }));
         app.MapGet("/api/fork/music", async (YandexMusic music, YandexAuth auth, CancellationToken ct) =>
         {
-            try
-            {
-                var (liked, nowLiked) = await music.LikedAsync(LikedShown, ct);
-                return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked, now = await music.NowAsync(ct), nowLiked });
-            }
-            catch (Exception ex) when (IsYandexDown(ex))
-            { return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked = Array.Empty<LikedTrack>(), error = ex.Message }); }
+            try { return Results.Json(new { token = auth.SignedIn, login = auth.Login, now = await music.NowAsync(ct), nowLiked = await music.NowLikedAsync(ct) }); }
+            catch (Exception ex) when (IsYandexDown(ex)) { return Results.Json(new { token = auth.SignedIn, login = auth.Login, error = ex.Message }); }
         });
-        // the panel shows the code, the Mac opens the page to type it in
         app.MapPost("/api/fork/music/login", (YandexAuth auth, CancellationToken ct) => Yandex(async () =>
         {
             var login = await auth.StartLoginAsync(ct);
@@ -66,15 +53,10 @@ public static class ForkApi
             await music.DislikeAsync(ct) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true })));
         app.MapGet("/api/fork/music/cover", (YandexMusic music, CancellationToken ct) => Yandex(async () =>
             await music.CoverAsync(ct) is { } jpeg ? Results.File(jpeg, "image/jpeg") : Results.NotFound()));
-        app.MapPost("/api/fork/music/track", (string id, string? album) =>
-            long.TryParse(id, out var track) ? OpenOnMac(long.TryParse(album, out var a) ? $"https://music.yandex.ru/album/{a}/track/{track}" : $"https://music.yandex.ru/track/{track}") : Results.BadRequest());
-        app.MapPost("/api/fork/music/wave", () => OpenOnMac("https://music.yandex.ru/"));
         app.MapGet("/api/fork/dev", (DevStatus dev) => Results.Json(new { servers = dev.Servers, vpn = dev.Vpn }));
         app.MapPost("/api/fork/dev/open", (int port, DevStatus dev) =>
             dev.Open(port) is { } error ? Results.BadRequest(new { error }) : Results.Ok(new { ok = true }));
     }
-
-    private const int LikedShown = 12;
 
     private static bool IsYandexDown(Exception ex) =>
         ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException;
@@ -84,8 +66,6 @@ public static class ForkApi
         try { return await call(); }
         catch (Exception ex) when (IsYandexDown(ex)) { return Results.BadRequest(new { error = "Яндекс недоступен: " + ex.Message }); }
     }
-
-    private static IResult OpenOnMac(string url) { Open(url); return Results.Ok(new { ok = true }); }
 
     /// <summary>Hands an address to the Mac's default browser (open(1), the address as one argument, no shell).</summary>
     internal static void Open(string url)
