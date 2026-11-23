@@ -34,5 +34,6 @@
 .x-act:first-child svg { color: var(--x-claude); }
 .x-act:active { background: var(--x-raise); }
 .x-row.track { grid-template-columns: 1fr; gap: 2px; }
+.x-code { margin: 6px 0 2px; font: 500 var(--x-fs-num-s) var(--x-mono); letter-spacing: .18em; color: var(--x-text); }
 .x-row.track span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .x-media .vol input[type=range] { flex: 1; min-width: 40px; }

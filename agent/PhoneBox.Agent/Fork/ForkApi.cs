@@ -14,7 +14,7 @@ public static class ForkApi
         Monitor<DevStatus>(services);
         Monitor<GpuProcesses>(services);
         Monitor<ClaudeTokens>(services);
-        services.AddSingleton<YandexMusic>();
+        services.AddSingleton<YandexAuth>().AddSingleton<YandexMusic>();
     }
 
     private static void Monitor<T>(IServiceCollection services) where T : class, IHostedService
@@ -40,11 +40,18 @@ public static class ForkApi
 
         app.MapGet("/api/fork/claude", (ClaudeTokens tokens) => Results.Json(new { week = tokens.Week }));
         app.MapGet("/api/fork/gpu", (GpuProcesses gpu) => Results.Json(new { top = gpu.Top }));
-        app.MapGet("/api/fork/music", async (YandexMusic music, CancellationToken ct) =>
+        app.MapGet("/api/fork/music", async (YandexMusic music, YandexAuth auth, CancellationToken ct) =>
         {
-            try { return Results.Json(new { token = music.HasToken, liked = await music.LikedAsync(LikedShown, ct) }); }
+            try { return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked = await music.LikedAsync(LikedShown, ct) }); }
             catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
-            { return Results.Json(new { token = music.HasToken, liked = Array.Empty<LikedTrack>(), error = ex.Message }); }
+            { return Results.Json(new { token = auth.SignedIn, login = auth.Login, liked = Array.Empty<LikedTrack>(), error = ex.Message }); }
+        });
+        // the panel shows the code, the Mac opens the page to type it in
+        app.MapPost("/api/fork/music/login", async (YandexAuth auth, CancellationToken ct) =>
+        {
+            try { var login = await auth.StartLoginAsync(ct); Open(login.Url); return Results.Json(login); }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
+            { return Results.BadRequest(new { error = "Яндекс недоступен: " + ex.Message }); }
         });
         app.MapPost("/api/fork/music/{rating:regex(^(like|dislike)$)}", async (string rating, YandexMusic music, CancellationToken ct) =>
         {

@@ -9,24 +9,17 @@ public sealed record LikedTrack(string Id, string Title, string Artist);
 /// <summary>
 /// Yandex Music for the Music page (docs/fork/DESIGN.md): like or dislike what is playing, the liked tracks, and
 /// opening My Wave or a track on the Mac. The playing track comes from the system's Now Playing (upstream MediaMonitor)
-/// and is found in the catalog by artist and title. The account's OAuth token is a file of its own,
-/// ~/.config/phonebox-fork/yandex-music.token, so it never travels in the agent's config or its settings page.
+/// and is found in the catalog by artist and title. The account comes from <see cref="YandexAuth"/>.
 /// The API answers some regions only with a token ("Unavailable For Legal Reasons" without one).
 /// </summary>
-public sealed class YandexMusic(MediaMonitor media)
+public sealed class YandexMusic(MediaMonitor media, YandexAuth auth)
 {
-    private const string Api = "https://api.music.yandex.net";
-    internal static readonly string TokenFile =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "phonebox-fork", "yandex-music.token");
-    private readonly HttpClient _http = new() { BaseAddress = new Uri(Api), Timeout = TimeSpan.FromSeconds(10) };
-    private string? _uid;
-
-    public bool HasToken => File.Exists(TokenFile);
+    private readonly HttpClient _http = new() { BaseAddress = new Uri("https://api.music.yandex.net"), Timeout = TimeSpan.FromSeconds(10) };
 
     /// <summary>Likes (or dislikes) the track Now Playing shows; an error message, or null when done.</summary>
     public async Task<string?> RateAsync(bool like, CancellationToken ct)
     {
-        if (!HasToken) return "Нет токена Яндекс Музыки (" + TokenFile + ")";
+        if (!auth.SignedIn) return "Сначала войди в Яндекс";
         if (media.Snapshot() is not { Title.Length: > 0 } now) return "Сейчас ничего не играет";
         var track = await FindAsync($"{now.Artist} {now.Title}", ct);
         if (track is null) return "Не нашёл трек в каталоге";
@@ -39,7 +32,7 @@ public sealed class YandexMusic(MediaMonitor media)
     /// <summary>The newest liked tracks, newest first.</summary>
     public async Task<IReadOnlyList<LikedTrack>> LikedAsync(int max, CancellationToken ct)
     {
-        if (!HasToken) return [];
+        if (!auth.SignedIn) return [];
         var uid = await UidAsync(ct);
         using var likes = await JsonAsync(HttpMethod.Get, $"/users/{uid}/likes/tracks", null, ct);
         var ids = likes.RootElement.GetProperty("result").GetProperty("library").GetProperty("tracks").EnumerateArray()
@@ -71,11 +64,11 @@ public sealed class YandexMusic(MediaMonitor media)
         return album is null ? first.GetProperty("id").ToString() : $"{first.GetProperty("id")}:{album}";
     }
 
+    // ponytail: asked on every call (one small request per 5 min); cache it per token if that ever matters
     private async Task<string> UidAsync(CancellationToken ct)
     {
-        if (_uid is not null) return _uid;
         using var doc = await JsonAsync(HttpMethod.Get, "/account/status", null, ct);
-        return _uid = doc.RootElement.GetProperty("result").GetProperty("account").GetProperty("uid").ToString();
+        return doc.RootElement.GetProperty("result").GetProperty("account").GetProperty("uid").ToString();
     }
 
     private async Task<JsonDocument> JsonAsync(HttpMethod method, string path, HttpContent? body, CancellationToken ct)
@@ -88,7 +81,9 @@ public sealed class YandexMusic(MediaMonitor media)
     private async Task<HttpResponseMessage> SendAsync(HttpMethod method, string path, HttpContent? body, CancellationToken ct)
     {
         var req = new HttpRequestMessage(method, path) { Content = body };
-        req.Headers.Authorization = new AuthenticationHeaderValue("OAuth", (await File.ReadAllTextAsync(TokenFile, ct)).Trim());
-        return await _http.SendAsync(req, ct);
+        req.Headers.Authorization = new AuthenticationHeaderValue("OAuth", await auth.AccessTokenAsync(ct) ?? "");
+        var r = await _http.SendAsync(req, ct);
+        if (r.StatusCode == System.Net.HttpStatusCode.Unauthorized) auth.SignOut(); // revoked: the panel offers to sign in again
+        return r;
     }
 }
