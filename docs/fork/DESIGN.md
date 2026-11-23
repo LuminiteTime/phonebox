@@ -57,12 +57,15 @@ Upstream-данные агента (`/api/state`, `/procs`, `/quotas`, `/work`, 
 | `GET /api/fork/claude` | токены Claude Code по дням из `~/.claude/projects/**/*.jsonl` |
 | `GET /api/fork/dev`, `POST …/open?port=` | dev-серверы (`lsof`: порт, программа, проект) и VPN (`scutil`, маршрут) |
 | `GET /api/fork/digest`, `POST …/open?id=` | дайджест Habr / HN / Medium, Medium через проверенное зеркало |
-| `GET /api/fork/music`, `POST …/like`, `…/dislike`, `…/wave`, `…/track?id=` | Яндекс Музыка |
+| `GET /api/fork/music`, `POST …/login`, `…/like`, `…/dislike`, `…/wave`, `…/track?id=` | Яндекс Музыка |
 | `GET /api/fork/app?have=` | новый APK для самообновления приложения |
 
-Яндекс Музыке нужен OAuth-токен в файле `~/.config/phonebox-fork/yandex-music.token` (права 600). Его можно получить
-на `https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d`
-(клиент мобильного приложения Музыки), значение `access_token` из адреса после входа.
+Вход в Яндекс Музыку делается один раз кнопкой «Войти в Яндекс» на странице «Музыка», через OAuth Device Flow, как на
+телевизорах. Агент запрашивает код, открывает на Mac `ya.ru/device`, панель показывает код, его вводят на этой странице
+и подтверждают. Токен живёт около года, агент продлевает его refresh-токеном за месяц до конца
+(`Fork/YandexAuth.cs`). Если Яндекс отозвал токен (ответ 401), агент удаляет его, и панель снова показывает кнопку
+входа. Токены лежат в `~/.config/phonebox-fork/yandex-music.json` с правами 600, не в конфиге агента. Клиент OAuth
+публичный, из приложения Музыки для Android: API принимает только его токены.
 
 Дайджест: Habr (топ дня и недели, сложность «средне» и выше, рейтинг от 15, потоки разработка / администрирование /
 AI), главная HN от 150 очков, инженерные блоги на Medium (Netflix, Airbnb, Lyft, Pinterest, Expedia) и Medium-ссылки с
